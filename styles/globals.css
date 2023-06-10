@@ -31,14 +31,9 @@
      transform: translateX(-30%) scale(0.9) !important;
      left: 0 !important;
      z-index: 10;
-     transition-duration: 0.5s !important;
 }
  [class^="Carousel-module_next"], [class*=" Carousel-module_next"] {
      transform: translateX(30%) scale(0.9) !important;
      right: 0 !important;
      z-index: 10;
-     transition-duration: 0.5s !important;
-}
- * {
-     transition-duration: 0.5s !important;
 }
