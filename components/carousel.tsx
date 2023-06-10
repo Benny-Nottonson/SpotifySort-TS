@@ -1,53 +1,70 @@
-import React, { useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Playlist from './playlist';
-import slideAnimationHandler from './slideanimation';
+import React, { useRef } from "react";
+import {
+	Carousel,
+	CarouselControllerHandle,
+} from "react-configurable-carousel";
+import Playlist from "./playlist";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { CarouselProps } from "@/types/types";
 
-const MyCarousel = ({ playlistIDs, token }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const ArrowPrev = ({ onClick }: { onClick: () => void }) => (
+	<button
+		className="absolute top-1/2 left-2 transform -translate-y-1/2 carousel-arrow left z-50 text-black hover:scale-110 duration-300"
+		onClick={onClick}
+	>
+		<ArrowLeft size={32} />
+	</button>
+);
 
-  const handlePrev = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? playlistIDs.length - 1 : prevSlide - 1));
-  };
+const ArrowNext = ({ onClick }: { onClick: () => void }) => (
+	<button
+		className="absolute top-1/2 right-2 transform -translate-y-1/2 carousel-arrow right z-50 text-black hover:scale-110 duration-300"
+		onClick={onClick}
+	>
+		<ArrowRight size={32} />
+	</button>
+);
 
-  const handleNext = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === playlistIDs.length - 1 ? 0 : prevSlide + 1));
-  };
+const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
+	const controllerRef = useRef<CarouselControllerHandle>(null);
 
-  return (
-    <div className="relative overflow-hidden">
-      <div className="flex items-center justify-center mb-4">
-        <div className="carousel-buttons">
-          <button className="carousel-button" onClick={handlePrev}>
-            Previous
-          </button>
-          <button className="carousel-button" onClick={handleNext}>
-            Next
-          </button>
-        </div>
-        <Carousel
-          showArrows={false}
-          onChange={setCurrentSlide}
-          selectedItem={currentSlide}
-          animationHandler={slideAnimationHandler}
-          showThumbs={false}
-          showIndicators={false}
-          showStatus={false}
-          renderArrowPrev={() => null}
-          renderArrowNext={() => null}
-        >
-          {playlistIDs.map((playlistId, index) => (
-            <div key={index}>
-              {currentSlide === index && (
-                <Playlist playlistId={playlistId} token={token} />
-              )}
-            </div>
-          ))}
-        </Carousel>
-      </div>
-    </div>
-  );
+	const handlePrev = () => {
+		if (controllerRef.current) {
+			controllerRef.current.shiftLeft();
+		}
+	};
+
+	const handleNext = () => {
+		if (controllerRef.current) {
+			controllerRef.current.shiftRight();
+		}
+	};
+
+	const slides = [...playlistIDs];
+
+	return (
+		<div className="relative w-screen">
+			<ArrowPrev onClick={handleNext} />
+			<ArrowNext onClick={handlePrev} />
+			<div className="text-center w-auto relative z-0">
+				<Carousel
+					arrows={false}
+					dotsNavigation={false}
+					width="100%"
+					height="100%"
+					carouselStyle="3d"
+					ref={controllerRef}
+					outOfFocusDarken={true}
+				>
+					{slides.map((playlistId, index) => (
+						<div key={index}>
+							<Playlist playlistId={playlistId} token={token} />
+						</div>
+					))}
+				</Carousel>
+			</div>
+		</div>
+	);
 };
 
 export default MyCarousel;

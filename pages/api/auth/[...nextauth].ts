@@ -3,7 +3,7 @@ import { JWT } from 'next-auth/jwt';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
 const scope =
-  'playlist-read-private playlist-modify-private playlist-modify-public user-read-email';
+  'playlist-read-private playlist-modify-private playlist-modify-public';
 
 async function refreshAccessToken(token: JWT) {
   try {
@@ -54,7 +54,7 @@ export default NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account }: { token: any, account: any }) {
       if (account) {
         token.id = account.id;
         token.expires_at = account.expires_at;
@@ -67,7 +67,7 @@ export default NextAuth({
       }
       return refreshAccessToken(token);
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       session.user = token;
       session.access_token = token.access_token;
       session.error = token.error;
