@@ -4,6 +4,7 @@ import Image from 'next/image';
 const PlaylistComponent = ({ token, playlistId }) => {
   const [playlist, setPlaylist] = useState(null);
   const maxCharacters = 15;
+
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
@@ -31,7 +32,7 @@ const PlaylistComponent = ({ token, playlistId }) => {
   };
 
   if (!playlist) {
-    return <div>Loading playlist...</div>;
+    return null;
   }
 
   const { images, tracks } = playlist;
@@ -54,12 +55,12 @@ const PlaylistComponent = ({ token, playlistId }) => {
         <div className="flex">
           {playlistImage && (
             <div className="relative h-64 w-64 mr-4">
-              <Image src={playlistImage} alt="Playlist" layout="fill" objectFit="cover" className="rounded-lg shadow-lg" />
+              <Image src={playlistImage} alt="Playlist" fill={true} style={{objectFit:"fill"}} className="rounded-lg shadow-lg" />
             </div>
           )}
           <div className="flex flex-col justify-between">
             <div>
-              <ul className="text-white space-y-1">
+              <ul className="text-white space-y-1 text-left">
                 {firstFiveSongs.map((song) => (
                   <li key={song.id} className="truncate">
                     {truncateText(song.name, maxCharacters)} -{' '}

@@ -3,14 +3,13 @@ import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import Head from 'next/head';
 import Button from '../components/button';
-import Carousel from '../components/carousel';
+import MyCarousel from '../components/carousel';
 
 export default function App() {
   const router = useRouter();
   const { session } = router.query;
   const [bearerToken, setBearerToken] = useState(null);
-  const [playlists, setPlaylists] = useState([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [playlistIDs, setPlaylistIDs] = useState([]);
 
   useEffect(() => {
     if (!session) {
@@ -32,8 +31,7 @@ export default function App() {
         });
         if (response.ok) {
           const data = await response.json();
-          setPlaylists(data.items);
-          setIsInitialized(true);
+          setPlaylistIDs(data.items.map((item) => item.id));
         } else {
           console.error('Error fetching playlists:', response.status, response.statusText);
         }
@@ -60,7 +58,7 @@ export default function App() {
         <Button text="Sign Out" onEvent={handleSignOut} />
       </div>
       <div>
-        {isInitialized && <Carousel playlists={playlists} token={bearerToken} />}
+        <MyCarousel playlistIDs={playlistIDs} token={bearerToken} />
       </div>
     </main>
   );
