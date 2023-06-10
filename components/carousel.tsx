@@ -7,17 +7,35 @@ import slideAnimationHandler from './slideanimation';
 const MyCarousel = ({ playlistIDs, token }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const handlePrev = () => {
+    setCurrentSlide((prevSlide) => (prevSlide === 0 ? playlistIDs.length - 1 : prevSlide - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prevSlide) => (prevSlide === playlistIDs.length - 1 ? 0 : prevSlide + 1));
+  };
+
   return (
     <div className="relative overflow-hidden">
       <div className="flex items-center justify-center mb-4">
+        <div className="carousel-buttons">
+          <button className="carousel-button" onClick={handlePrev}>
+            Previous
+          </button>
+          <button className="carousel-button" onClick={handleNext}>
+            Next
+          </button>
+        </div>
         <Carousel
-          showArrows={true}
+          showArrows={false}
           onChange={setCurrentSlide}
           selectedItem={currentSlide}
           animationHandler={slideAnimationHandler}
           showThumbs={false}
           showIndicators={false}
           showStatus={false}
+          renderArrowPrev={() => null}
+          renderArrowNext={() => null}
         >
           {playlistIDs.map((playlistId, index) => (
             <div key={index}>

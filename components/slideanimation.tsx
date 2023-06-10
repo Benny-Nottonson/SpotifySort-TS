@@ -40,12 +40,17 @@ const slideAnimationHandler: AnimationHandler = (props, state): AnimationHandler
       opacity: 1,
       position: 'relative',
       transform: 'rotateY(0deg)',
-      zIndex: 0, // Added zIndex to bring selected slide to the front
+      zIndex: 10,
     },
     prevStyle: {
       ...slideStyle,
       transform: 'rotateY(-45deg)',
-      zIndex: -1, // Added zIndex to move previous slide behind the selected slide
+      zIndex: 5,
+    },
+    nextStyle: {
+      ...slideStyle,
+      transform: 'rotateY(45deg)',
+      zIndex: 5,
     },
   };
 };
