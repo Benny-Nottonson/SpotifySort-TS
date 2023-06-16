@@ -40,6 +40,7 @@ export default function App() {
 						"Error fetching playlists:",
 						response.status,
 						response.statusText,
+						signOut({ callbackUrl: "/" }),
 					);
 				}
 			} catch (error) {

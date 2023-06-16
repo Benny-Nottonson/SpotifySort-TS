@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { PlaylistProp } from "@/types/types";
+import sortPlaylist from "@/utils/sortPlaylist";
 
 const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 	const [playlist, setPlaylist] = useState<any>(null);
@@ -39,9 +40,9 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 		fetchPlaylist();
 	}, [token, playlistId]);
 
-	const sortPlaylist = () => {
-		console.log("Sorting the playlist...");
-	};
+	const handleSortPlaylist = () => {
+		sortPlaylist(playlistId, token);
+	  };
 
 	if (!playlist) {
 		return (
@@ -78,6 +79,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 			</div>
 		);
 	}
+
 
 	const { images, tracks } = playlist;
 	const playlistImage = images && images.length > 0 ? images[0].url : null;
@@ -137,7 +139,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 							</p>
 							<button
 								className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg shadow-md ml-4"
-								onClick={sortPlaylist}
+								onClick={handleSortPlaylist}
 							>
 								Sort Playlist
 							</button>
