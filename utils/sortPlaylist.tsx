@@ -150,6 +150,9 @@ export default function sortPlaylist(playlistId: string, bearerToken: string) {
     spotifyApi.getPlaylist(playlistId).then((data) => {
         const tracks = data.body.tracks.items;
         const trackIdWithImage = tracks.map((track) => {
+            if (!track.track) {
+                throw new Error("Track is undefined");
+            }
             const trackId = track.track.id;
             const imageUrl = track.track.album.images[0].url;
             return { trackId, imageUrl };
