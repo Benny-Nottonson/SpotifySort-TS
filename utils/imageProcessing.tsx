@@ -1,3 +1,5 @@
+import { reshape, zeros, max, multiply, matrix, Matrix } from "mathjs";
+
 /**
  * """Module for processing images and colors"""
 from io import BytesIO
@@ -136,69 +138,341 @@ def _xyz_to_lab(xyz: ndarray) -> tuple:
     return lab_color
  */
 
+function rgbImageToMac(img: Matrix): Matrix {
+	const flattenedPixels = reshape(img, [-1, 3]);
+	const macbethIndicesArray: number[] = [];
+	for (let i = 0; i < flattenedPixels.size()[0]; i++) {
+		const pixel = flattenedPixels.get([i, 0]);
+		macbethIndicesArray.push(findMinimumMacbeth(pixel, labDistance3d));
+	}
+	const width = img.size().slice(0, 2);
+	const macImage = matrix(macbethIndicesArray).resize([width, width]);
+	return macImage;
+}
+
+function bgrToLab(bgrColor: [number, number, number]): number[] {
+	let bgrColorNormalized = Array.from(bgrColor, (x) => x / 255);
+	bgrColorNormalized = bgrToXyz(bgrColorNormalized);
+	const labColor = xyzToLab(bgrColorNormalized);
+	return labColor;
+}
+
+function bgrToXyz(normalizedBgr: any): any {
+	const mask = normalizedBgr.map((value: number) => value > 0.04045);
+	const maskNegated = mask.map((value: boolean) => !value);
+
+	normalizedBgr = normalizedBgr.map((value: number, index: number) =>
+		maskNegated[index] ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4,
+	);
+
+	const xyzToBgrMatrix = [
+		[0.1805, 0.3576, 0.4124],
+		[0.0722, 0.7152, 0.2126],
+		[0.9505, 0.1192, 0.0193],
+	];
+
+	const xyzColor = multiply(
+		xyzToBgrMatrix,
+		matrix(normalizedBgr).resize([3, 1]),
+	);
+	return xyzColor;
+}
+
+function xyzToLab(xyz: any): number[] {
+	const xyzNReference = [0.95047, 1.0, 1.08883];
+	const xyzNormalized = xyz
+		.map((value: number, index: number) => value / xyzNReference[index])
+		.map((value: number) => value ** (1 / 3));
+
+	const mask = xyzNormalized.map((value: number) => value <= 0.008856);
+	xyzNormalized.forEach((value: number, index: number) => {
+		if (mask[index]) {
+			xyzNormalized[index] = 7.787 * value + 16 / 116;
+		}
+	});
+
+	const labColor = [
+		116 * xyzNormalized[1] - 16,
+		500 * (xyzNormalized[0] - xyzNormalized[1]),
+		200 * (xyzNormalized[1] - xyzNormalized[2]),
+	];
+	return labColor;
+}
+
+function labDistance3d(
+	bgrOne: [number, number, number],
+	bgrTwo: [number, number, number],
+): number {
+	const [lOne, aOne, bOne] = bgrToLab(bgrOne);
+	const [lTwo, aTwo, bTwo] = bgrToLab(bgrTwo);
+	return Math.abs(lOne - lTwo) + Math.abs(aOne - aTwo) + Math.abs(bOne - bTwo);
+}
+function bincount(
+	data: any[],
+	weights: any[] | null,
+	minlength: number,
+): any[] {
+	const result: any[] = new Array(minlength).fill(0);
+
+	if (weights) {
+		for (let i = 0; i < data.length; i++) {
+			const index = data[i];
+			if (index >= 0 && index < result.length) {
+				result[index] += weights[i];
+			}
+		}
+	} else {
+		for (let i = 0; i < data.length; i++) {
+			const index = data[i];
+			if (index >= 0 && index < result.length) {
+				result[index]++;
+			}
+		}
+	}
+
+	return result;
+}
+
+function nonzero(array: any[]): any[] {
+	const indices: any[] = [];
+
+	for (let i = 0; i < array.length; i++) {
+		if (array[i] !== 0) {
+			indices.push(i);
+		}
+	}
+
+	return indices;
+}
+
+function label(matrix: number[][]): number[][] {
+	const rows = matrix.length;
+	const cols = matrix[0].length;
+
+	const labeledMatrix: number[][] = [];
+	const equivalences = new Map();
+
+	let labelCount = 0;
+
+	for (let i = 0; i < rows; i++) {
+		labeledMatrix.push(new Array(cols).fill(0));
+	}
+
+	function getLabel(equivalence: Map<number, number>, label: number): number {
+		while (equivalence.has(label) && equivalence.get(label) !== label) {
+			const nLabel = equivalence.get(label);
+            if (nLabel !== undefined) {
+                label = nLabel;
+            }
+		}
+		return label;
+	}
+
+	function setLabel(
+		equivalence: Map<number, number>,
+		label: number,
+		newLabel: number,
+	): void {
+		while (equivalence.has(label) && equivalence.get(label) !== label) {
+			const temp = label;
+			const nLabel = equivalence.get(label);
+            if (nLabel !== undefined) {
+                label = nLabel;
+            }
+			equivalence.set(temp, newLabel);
+		}
+		equivalence.set(label, newLabel);
+	}
+
+	for (let i = 0; i < rows; i++) {
+		for (let j = 0; j < cols; j++) {
+			if (matrix[i][j] !== 0) {
+				const neighbors: number[] = [];
+				if (i > 0 && labeledMatrix[i - 1][j] !== 0) {
+					neighbors.push(labeledMatrix[i - 1][j]);
+				}
+				if (j > 0 && labeledMatrix[i][j - 1] !== 0) {
+					neighbors.push(labeledMatrix[i][j - 1]);
+				}
+
+				if (neighbors.length === 0) {
+					labelCount++;
+					labeledMatrix[i][j] = labelCount;
+				} else {
+					const minNeighborLabel = Math.min(...neighbors);
+					labeledMatrix[i][j] = minNeighborLabel;
+					for (const neighborLabel of neighbors) {
+						setLabel(equivalences, neighborLabel, minNeighborLabel);
+					}
+				}
+			}
+		}
+	}
+
+	for (let i = 0; i < rows; i++) {
+		for (let j = 0; j < cols; j++) {
+			if (labeledMatrix[i][j] !== 0) {
+				labeledMatrix[i][j] = getLabel(equivalences, labeledMatrix[i][j]);
+			}
+		}
+	}
+
+	return labeledMatrix;
+}
+
+function blobExtract(macImage: number[][]): [number, number[][]] {
+	const labeledMatrix: number[][] = label(macImage).map((row) =>
+		row.map((value) => value + 1),
+	);
+	let nBlobs: number = Math.max(...labeledMatrix.flat());
+	if (nBlobs > 1) {
+		const count: number[] = bincount(
+			labeledMatrix.flat(),
+			null,
+			nBlobs + 1,
+		).slice(2);
+		nBlobs += count.filter((c) => c > 1).length;
+	}
+	return [nBlobs, labeledMatrix];
+}
+
+function findMinimumMacbeth(
+	bgrColor: [number, number, number],
+	func: Function,
+): number {
+	const macbethColors = [
+		[115, 82, 68],
+		[194, 150, 130],
+		[98, 122, 157],
+		[87, 108, 67],
+		[133, 128, 177],
+		[103, 189, 170],
+		[214, 126, 44],
+		[80, 91, 166],
+		[193, 90, 99],
+		[94, 60, 108],
+		[157, 188, 64],
+		[224, 163, 46],
+		[56, 61, 150],
+		[70, 148, 73],
+		[175, 54, 60],
+		[231, 199, 31],
+		[187, 86, 149],
+		[8, 133, 161],
+		[243, 243, 242],
+		[200, 200, 200],
+		[160, 160, 160],
+		[122, 122, 121],
+		[85, 85, 85],
+		[52, 52, 52],
+	];
+	const colorDistances = macbethColors.map((macbethColor) =>
+		func(bgrColor, macbethColor),
+	);
+	return argmin(colorDistances);
+}
 
 export default async function getCCV(url: string, imageSize: number) {
-    const image = await getImageFromUrl(url, imageSize);
-    const sizeThreshold = Math.round(0.01 * imageSize * imageSize);
-    console.log(image);
+	const image = await getImageFromUrl(url, imageSize);
+	const sizeThreshold = Math.round(0.01 * imageSize * imageSize);
+	const imageArray = Array.from(image);
+	const imageMatrix = matrix(imageArray);
+	const macbethImage = rgbImageToMac(imageMatrix);
+	const [nBlobs, blob] = blobExtract(macbethImage);
+
+	const table: [number, number][] = [];
+	for (let i = 0; i < blob.shape[0]; i++) {
+		for (let j = 0; j < blob.shape[1]; j++) {
+			const entry = blob[i][j];
+			const colorIndex = entry !== 0 ? macbethImage[i][j] : 0;
+			const size = entry !== 0 ? table[entry - 1][1] + 1 : 0;
+			table.push([colorIndex, size]);
+		}
+	}
+
+	const colorCoherenceVector: [number, number][] = Array.from(
+		{ length: 24 },
+		() => [0, 0],
+	);
+	for (const [colorIndex, size] of table) {
+		const index = colorIndex - 1;
+		colorCoherenceVector[index] = [
+			colorCoherenceVector[index][0] + size * (size >= sizeThreshold),
+			colorCoherenceVector[index][1] + size * (size < sizeThreshold),
+		];
+	}
+
+	return image;
 }
 
 async function getImageFromUrl(url: string, imageSize: number) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    const imageBytes = new Uint8Array(arrayBuffer);
-  
-    const resizedImageBytes = resizeImage(imageBytes, imageSize);
-    const bgrImageBytes = convertToBGR(resizedImageBytes);
-  
-    return bgrImageBytes;
-  }
-  
-  function resizeImage(imageBytes: Uint8Array, imageSize: number): Uint8Array {
-    const imageWidth = Math.floor(Math.sqrt(imageBytes.length / 3)); // Assuming RGB format
-    const imageHeight = imageWidth;
-  
-    const targetSize = Math.min(imageSize, imageWidth, imageHeight);
-  
-    const widthRatio = imageWidth / targetSize;
-    const heightRatio = imageHeight / targetSize;
-  
-    const resizedWidth = Math.floor(imageWidth / widthRatio);
-    const resizedHeight = Math.floor(imageHeight / heightRatio);
-  
-    const resizedImageBytes = new Uint8Array(targetSize * targetSize * 3);
-  
-    for (let y = 0; y < resizedHeight; y++) {
-      for (let x = 0; x < resizedWidth; x++) {
-        const sourceX = Math.floor(x * widthRatio);
-        const sourceY = Math.floor(y * heightRatio);
-  
-        const targetIndex = (y * resizedWidth + x) * 3;
-        const sourceIndex = (sourceY * imageWidth + sourceX) * 3;
-  
-        resizedImageBytes[targetIndex] = imageBytes[sourceIndex];
-        resizedImageBytes[targetIndex + 1] = imageBytes[sourceIndex + 1];
-        resizedImageBytes[targetIndex + 2] = imageBytes[sourceIndex + 2];
-      }
-    }
-  
-    return resizedImageBytes;
-  }
-  
-  function convertToBGR(imageBytes: Uint8Array): Uint8Array {
-    const bgrImageBytes = new Uint8Array(imageBytes.length);
-  
-    for (let i = 0; i < imageBytes.length; i += 3) {
-      const red = imageBytes[i];
-      const green = imageBytes[i + 1];
-      const blue = imageBytes[i + 2];
-  
-      bgrImageBytes[i] = blue;
-      bgrImageBytes[i + 1] = green;
-      bgrImageBytes[i + 2] = red;
-    }
-  
-    return bgrImageBytes;
-  }
-  
+	const response = await fetch(url);
+	const arrayBuffer = await response.arrayBuffer();
+	const imageBytes = new Uint8Array(arrayBuffer);
 
+	const resizedImageBytes = resizeImage(imageBytes, imageSize);
+	const bgrImageBytes = convertToBGR(resizedImageBytes);
+
+	return bgrImageBytes;
+}
+
+function argmin(array: number[]): number {
+	let minIndex = 0;
+	let minValue = array[0];
+
+	for (let i = 1; i < array.length; i++) {
+		if (array[i] < minValue) {
+			minIndex = i;
+			minValue = array[i];
+		}
+	}
+
+	return minIndex;
+}
+
+function resizeImage(imageBytes: Uint8Array, imageSize: number): Uint8Array {
+	const imageWidth = Math.floor(Math.sqrt(imageBytes.length / 3));
+	const imageHeight = imageWidth;
+
+	const targetSize = Math.min(imageSize, imageWidth, imageHeight);
+
+	const widthRatio = imageWidth / targetSize;
+	const heightRatio = imageHeight / targetSize;
+
+	const resizedWidth = Math.floor(imageWidth / widthRatio);
+	const resizedHeight = Math.floor(imageHeight / heightRatio);
+
+	const resizedImageBytes = new Uint8Array(targetSize * targetSize * 3);
+
+	for (let y = 0; y < resizedHeight; y++) {
+		for (let x = 0; x < resizedWidth; x++) {
+			const sourceX = Math.floor(x * widthRatio);
+			const sourceY = Math.floor(y * heightRatio);
+
+			const targetIndex = (y * resizedWidth + x) * 3;
+			const sourceIndex = (sourceY * imageWidth + sourceX) * 3;
+
+			resizedImageBytes[targetIndex] = imageBytes[sourceIndex];
+			resizedImageBytes[targetIndex + 1] = imageBytes[sourceIndex + 1];
+			resizedImageBytes[targetIndex + 2] = imageBytes[sourceIndex + 2];
+		}
+	}
+
+	return resizedImageBytes;
+}
+
+function convertToBGR(imageBytes: Uint8Array): Uint8Array {
+	const bgrImageBytes = new Uint8Array(imageBytes.length);
+
+	for (let i = 0; i < imageBytes.length; i += 3) {
+		const red = imageBytes[i];
+		const green = imageBytes[i + 1];
+		const blue = imageBytes[i + 2];
+
+		bgrImageBytes[i] = blue;
+		bgrImageBytes[i + 1] = green;
+		bgrImageBytes[i + 2] = red;
+	}
+
+	return bgrImageBytes;
+}

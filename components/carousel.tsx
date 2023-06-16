@@ -27,31 +27,29 @@ const ArrowNext = ({ onClick }: { onClick: () => void }) => (
 
 const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
 	const controllerRef = useRef<CarouselControllerHandle>(null);
-  const blur = 'blur';
+	const blur = "blur";
 
 	const handlePrev = () => {
-    const carousel = document.querySelector('.car');
-    if (carousel) {
-      carousel.classList.add(blur);
-      setTimeout(() => {
-        carousel.classList.remove(blur);
-      }
-      , 300);
-    }
+		const carousel = document.querySelector(".car");
+		if (carousel) {
+			carousel.classList.add(blur);
+			setTimeout(() => {
+				carousel.classList.remove(blur);
+			}, 300);
+		}
 		if (controllerRef.current) {
 			controllerRef.current.shiftLeft();
 		}
 	};
 
 	const handleNext = () => {
-    const carousel = document.querySelector('.car');
-    if (carousel) {
-      carousel.classList.add(blur);
-      setTimeout(() => {
-        carousel.classList.remove(blur);
-      }
-      , 300);
-    }
+		const carousel = document.querySelector(".car");
+		if (carousel) {
+			carousel.classList.add(blur);
+			setTimeout(() => {
+				carousel.classList.remove(blur);
+			}, 300);
+		}
 		if (controllerRef.current) {
 			controllerRef.current.shiftRight();
 		}

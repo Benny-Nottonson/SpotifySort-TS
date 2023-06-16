@@ -42,7 +42,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 
 	const handleSortPlaylist = () => {
 		sortPlaylist(playlistId, token);
-	  };
+	};
 
 	if (!playlist) {
 		return (
@@ -79,7 +79,6 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 			</div>
 		);
 	}
-
 
 	const { images, tracks } = playlist;
 	const playlistImage = images && images.length > 0 ? images[0].url : null;

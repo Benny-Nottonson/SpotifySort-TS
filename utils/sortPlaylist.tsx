@@ -144,24 +144,28 @@ if __name__ == "__main__":
 
 const imageSize = 24;
 
-export default function sortPlaylist(playlistId: string, bearerToken: string) {
-    const spotifyApi = new SpotifyWebApi();
-    spotifyApi.setAccessToken(bearerToken);
-    spotifyApi.getPlaylist(playlistId).then((data) => {
-        const tracks = data.body.tracks.items;
-        const trackIdWithImage = tracks.map((track) => {
-            if (!track.track) {
-                throw new Error("Track is undefined");
-            }
-            const trackId = track.track.id;
-            const imageUrl = track.track.album.images[0].url;
-            return { trackId, imageUrl };
-        });
-        const trackIdWithCcv = trackIdWithImage.map((track) => {
-            const trackId = track.trackId;
-            const ccv = getCCV(track.imageUrl, imageSize);
-            return { trackId, ccv };
-        });
-        console.log(trackIdWithCcv);
-    });
+export default async function sortPlaylist(
+	playlistId: string,
+	bearerToken: string,
+) {
+	const spotifyApi = new SpotifyWebApi();
+	spotifyApi.setAccessToken(bearerToken);
+	const data = await spotifyApi.getPlaylist(playlistId);
+	const tracks = data.body.tracks.items;
+	const trackIdWithImage = tracks.map((track) => {
+		if (!track.track) {
+			throw new Error("Track is undefined");
+		}
+		const trackId = track.track.id;
+		const imageUrl = track.track.album.images[0].url;
+		return { trackId, imageUrl };
+	});
+	const trackIdWithCcv = await Promise.all(
+		trackIdWithImage.map(async (track) => {
+			const trackId = track.trackId;
+			const ccv = await getCCV(track.imageUrl, imageSize);
+			return { trackId, ccv };
+		}),
+	);
+	console.log(trackIdWithCcv);
 }

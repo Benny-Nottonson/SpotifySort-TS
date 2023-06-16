@@ -59,14 +59,14 @@ def reorder_playlist(playlist_id: str, sorted_track_ids: list[str]) -> None:
  */
 
 export function removeDuplicates(items: any[]): any[] {
-    const seen = new Set();
-    const finalItems: any[] = [];
-    for (const item of items) {
-        const trackId = item.track.id;
-        if (!seen.has(trackId)) {
-            seen.add(trackId);
-            finalItems.push(item);
-        }
-    }
-    return finalItems;
+	const seen = new Set();
+	const finalItems: any[] = [];
+	for (const item of items) {
+		const trackId = item.track.id;
+		if (!seen.has(trackId)) {
+			seen.add(trackId);
+			finalItems.push(item);
+		}
+	}
+	return finalItems;
 }
