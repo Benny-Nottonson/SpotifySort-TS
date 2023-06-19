@@ -119,7 +119,7 @@ function getNLoop(loop: Array<[string, Array<Array<number>>]>) {
 def get_n_loop(loop: list) -> list[tuple[int, str, str]]:
     """Converts a loop to a list of tuples with the index and the color"""
     return [(i,) + tpl[1:] for i, tpl in enumerate(loop)] */
-    return loop.map((item, index) => [index, ...item]);
+    return loop.map((item, index) => [index, ...item.slice(1)]);
 }
 
 function findMinimum(pEntry: [string, Array<Array<number>>], func: CallableFunction, qEntries: Deque<[string, Array<Array<number>>]>): number {
