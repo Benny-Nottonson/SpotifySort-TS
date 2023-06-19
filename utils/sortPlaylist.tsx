@@ -1,5 +1,6 @@
 import SpotifyWebApi from "spotify-web-api-node";
-import getCCV from "./imageProcessing";
+import getCCV, { ccvDistance } from "./imageProcessing";
+// import loopSort, { resortLoop } from "./loopSorting";
 
 /**
  * """The main file for the Spotify Playlist Sorter"""
@@ -167,5 +168,12 @@ export default async function sortPlaylist(
 			return { trackId, ccv };
 		}),
 	);
-	console.log(trackIdWithCcv);
+    console.log(trackIdWithCcv);
+    // const sortedTracks = ccvSort(trackIdWithCcv);
+}
+
+function ccvSort(trackIdWithCcv: { trackId: string; ccv: number[][] }[]) {
+    const loop = loopSort(trackIdWithCcv, ccvDistance);
+    const sortedLoop = resortLoop(loop, ccvDistance, loop.length);
+    return sortedLoop.map((item) => item.trackId);
 }
