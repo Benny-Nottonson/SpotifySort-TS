@@ -238,16 +238,17 @@ function convertToBGR(imageBytes: Uint8Array): Uint8Array {
 	return bgrImageBytes;
 }
 
-export function ccvDistance(ccvOne: number[][], ccvTwo: number[][]): number {
+export function ccvDistance(ccvOne: number[], ccvTwo: number[]): number {
 	if (ccvOne.length !== ccvTwo.length) {
 		return Infinity;
 	}
 	const ccvOneArray = new Array<number>();
 	for (let i = 0; i < ccvOne.length; i++) {
 		ccvOneArray.push(
-			3 * Math.abs(ccvOne[i][0] - ccvTwo[i][0]) +
-				Math.abs(ccvOne[i][1] - ccvTwo[i][1]),
+			3 * Math.abs(ccvOne[0] - ccvTwo[0]) +
+				Math.abs(ccvOne[1] - ccvTwo[1]),
 		);
 	}
-	return ccvOneArray.reduce((a, b) => a + b, 0);
+	const dist = ccvOneArray.reduce((a, b) => a + b, 0);
+	return dist;
 }

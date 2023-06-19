@@ -170,11 +170,11 @@ export default async function sortPlaylist(
 	);
     const sortedLoop = ccvSort(trackIdWithCcv);
 	console.log(sortedLoop);
-	// const sortedTracks = ccvSort(trackIdWithCcv);
 }
 
 function ccvSort(trackIdWithCcv: [string, number[][]][]) {
-	const loop = loopSort(trackIdWithCcv, ccvDistance);
-	const sortedLoop = resortLoop(loop, ccvDistance, loop.length);
-	return sortedLoop.map((item) => item[0]);
+    const loop = loopSort(trackIdWithCcv, ccvDistance);
+    console.log(loop);
+	// const sortedLoop = resortLoop(loop, ccvDistance, loop.length);
+	return loop.map((item) => item[0]);
 }

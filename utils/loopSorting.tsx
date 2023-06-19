@@ -66,25 +66,6 @@ export function resortLoop(
 	func: (a: Array<Array<number>>, b: Array<Array<number>>) => number,
 	loopLength: number
 ): Array<[string, Array<Array<number>>]> {
-	/**
-    * def resort_loop(loop: list[tuple[int, int, int]], func: callable,
-                loop_length: int) -> list[tuple[int, int, int]]:
-    """Reorders a loop to minimize the distance between the colors"""
-    n_loop = deque(get_n_loop(loop))
-    distance_matrix = generate_distance_matrix(n_loop, func, loop_length)
-    counter = 0
-    while counter < 100000:
-        counter += 1
-        moving_loop_entry = n_loop.pop()
-        n_loop = move_entry(n_loop, moving_loop_entry, distance_matrix)
-        if n_loop[0][0] == 0:
-            break
-    return [(loop[tpl[0]][0],) + tpl[1:] for tpl in n_loop]
-    */
-	// Deque holds the list of songs and CCV values, ex - ['ldwajj@i32jja2, [[0, 2], [1, 3], ...]]
-	// Type is [string, Array<Array<number>>]
-	// getNLoop returns a list [index, ...values]
-	// nLoop shoudl hold that
 	let nLoop: Deque<[string, Array<Array<number>>]> = new Deque<[string, Array<Array<number>>]>(getNLoop(loop));
   const distanceMatrix: Array<Array<number>> = generateDistanceMatrix(nLoop, func, loopLength);
   let counter = 0;
@@ -93,10 +74,11 @@ export function resortLoop(
     const movingLoopEntry = nLoop.pop()!;
     nLoop = moveEntry(nLoop, movingLoopEntry[1], distanceMatrix);
 	const nVal = nLoop.get(0) || ["", []];
-    if (nVal[1][0][0] === 0) {
+    if (typeof nVal == typeof 1 || nVal[1][0][0] === 0) {
       break;
     }
   }
+  console.log(nLoop.toArray());
   return nLoop.toArray().map((tpl) => [loop[tpl[0]][0], ...tpl.slice(1)]);
 }
 
@@ -106,6 +88,9 @@ function generateDistanceMatrix(
 	loopLength: number,
 ): Array<Array<number>> {
 	const distanceMatrix: Array<Array<number>> = [];
+    for (let i = 0; i < loopLength; i++) {
+        distanceMatrix.push(new Array(loopLength).fill(0));
+    }
 	for (let i = 0; i < loopLength; i++) {
 		for (let n = 0; n < i; n++) {
 			const iVal = nLoop.get(i)![1];
@@ -153,6 +138,7 @@ export default function loopSort(
     loop.push(itemTwo.get(j) || ["", []]);
     rotate(itemTwo, -j);
     itemTwo.shift();
-  }
-  return loop.toArray();
+  } 
+    loop.pop();
+    return loop.toArray();
 }
