@@ -1,24 +1,28 @@
 import prepImage from "./imagePreprocess";
+import { CCV, CoherencePair, MacbethData } from "@/types";
 
-export default async function getCCV(imageUrl: string, imageSize: number): Promise<number[][]> {
-  const preppedData = await prepImage(imageUrl, imageSize);
+export default async function getCCV(
+  imageUrl: string,
+  imageSize: number
+): Promise<CCV> {
+  const preppedData: MacbethData = await prepImage(imageUrl, imageSize);
   const height = preppedData.length;
   const width = preppedData[0].length;
   const threshold = Math.round(height * width * 0.05);
-  const { connectedComponents, coherencePairs } = computeConnectedComponents(preppedData, threshold);
+  const coherencePairs = computeConnectedComponents(preppedData, threshold);
   const colorCoherenceVector = computeColorCoherenceVector(coherencePairs);
   return colorCoherenceVector;
 }
 
-function computeConnectedComponents(data: number[][], threshold: number): {
-  connectedComponents: number[][],
-  coherencePairs: { [key: number]: { alpha: number, beta: number, color: number } }
-} {
+function computeConnectedComponents(
+  data: number[][],
+  threshold: number
+): CoherencePair {
   const height = data.length;
   const width = data[0].length;
   const visited: boolean[][] = [];
   const connectedComponents: number[][] = [];
-  const coherencePairs: { [key: number]: { alpha: number, beta: number, color: number } } = {};
+  const coherencePairs: CoherencePair = {};
 
   for (let y = 0; y < height; y++) {
     visited[y] = [];
@@ -35,14 +39,26 @@ function computeConnectedComponents(data: number[][], threshold: number): {
     for (let x = 0; x < width; x++) {
       if (!visited[y][x]) {
         const color = data[y][x];
-        const { componentSize, coherentSize } = exploreConnectedComponent(data, visited, connectedComponents, x, y, color, threshold);
-        coherencePairs[componentLabel] = { alpha: coherentSize, beta: componentSize - coherentSize, color: color };
+        const { componentSize, coherentSize } = exploreConnectedComponent(
+          data,
+          visited,
+          connectedComponents,
+          x,
+          y,
+          color,
+          threshold
+        );
+        coherencePairs[componentLabel] = {
+          alpha: coherentSize,
+          beta: componentSize - coherentSize,
+          color: color,
+        };
         componentLabel++;
       }
     }
   }
 
-  return { connectedComponents, coherencePairs };
+  return coherencePairs;
 }
 
 function exploreConnectedComponent(
@@ -53,7 +69,7 @@ function exploreConnectedComponent(
   y: number,
   color: number,
   threshold: number
-): { componentSize: number, coherentSize: number } {
+): { componentSize: number; coherentSize: number } {
   const height = data.length;
   const width = data[0].length;
   const queue: [number, number][] = [[x, y]];
@@ -84,7 +100,12 @@ function exploreConnectedComponent(
   return { componentSize, coherentSize };
 }
 
-function getNeighbors(x: number, y: number, width: number, height: number): [number, number][] {
+function getNeighbors(
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): [number, number][] {
   const neighbors: [number, number][] = [];
 
   for (let ny = Math.max(y - 1, 0); ny <= Math.min(y + 1, height - 1); ny++) {
@@ -98,7 +119,9 @@ function getNeighbors(x: number, y: number, width: number, height: number): [num
   return neighbors;
 }
 
-function computeColorCoherenceVector(coherencePairs: { [key: number]: { alpha: number, beta: number, color: number } }): number[][] {
+function computeColorCoherenceVector(
+  coherencePairs: CoherencePair
+): number[][] {
   const numColors = 24;
   const colorCoherenceVector: number[][] = new Array(numColors);
   for (const componentLabel in coherencePairs) {

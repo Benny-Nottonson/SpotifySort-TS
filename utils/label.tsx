@@ -1,4 +1,4 @@
-type NumberMatrix = number[][];
+import { NumberMatrix } from "@/types";
 
 class UnionFind {
   parent: number[];
@@ -99,25 +99,41 @@ export default function label(input: NumberMatrix): [NumberMatrix, number] {
           const [x, y] = queue.shift()!;
           const currentLabel = labels[x][y];
 
-          if (x > 0 && !visited[x - 1][y] && labels[x - 1][y] === currentLabel) {
+          if (
+            x > 0 &&
+            !visited[x - 1][y] &&
+            labels[x - 1][y] === currentLabel
+          ) {
             labels[x - 1][y] = currentLabel;
             visited[x - 1][y] = true;
             queue.push([x - 1, y]);
           }
 
-          if (x < rows - 1 && !visited[x + 1][y] && labels[x + 1][y] === currentLabel) {
+          if (
+            x < rows - 1 &&
+            !visited[x + 1][y] &&
+            labels[x + 1][y] === currentLabel
+          ) {
             labels[x + 1][y] = currentLabel;
             visited[x + 1][y] = true;
             queue.push([x + 1, y]);
           }
 
-          if (y > 0 && !visited[x][y - 1] && labels[x][y - 1] === currentLabel) {
+          if (
+            y > 0 &&
+            !visited[x][y - 1] &&
+            labels[x][y - 1] === currentLabel
+          ) {
             labels[x][y - 1] = currentLabel;
             visited[x][y - 1] = true;
             queue.push([x, y - 1]);
           }
 
-          if (y < cols - 1 && !visited[x][y + 1] && labels[x][y + 1] === currentLabel) {
+          if (
+            y < cols - 1 &&
+            !visited[x][y + 1] &&
+            labels[x][y + 1] === currentLabel
+          ) {
             labels[x][y + 1] = currentLabel;
             visited[x][y + 1] = true;
             queue.push([x, y + 1]);
@@ -138,8 +154,5 @@ export default function label(input: NumberMatrix): [NumberMatrix, number] {
 
   const numLabels = new Set(labelMap.values()).size;
 
-  return [
-    labels,
-    numLabels
-  ]
+  return [labels, numLabels];
 }
