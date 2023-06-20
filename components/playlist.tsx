@@ -86,13 +86,8 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     .slice(0, 5)
     .map((item: { track: any }) => item.track);
 
-  console.log(tracks);
-  const playlistDuration: number = tracks?.items.reduce(
-    (acc: number, item: { track: { duration_ms?: number } }) =>
-      acc + (item.track?.duration_ms || 0),
-    0
-  ) || 0;
-  const durationInMinutes = Math.floor(playlistDuration / 60000);
+  
+  const songCount: number = tracks?.items.length;
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) {
@@ -135,7 +130,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
             <div className="flex justify-end items-end mt-4">
               <p className="text-gray-600 text-sm">
                 Playlist Length: <br />
-                {durationInMinutes} minutes
+                {songCount} songs
               </p>
               <button
                 className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg shadow-md ml-4"
