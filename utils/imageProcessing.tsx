@@ -5,15 +5,8 @@ export default async function getCCV(imageUrl: string, imageSize: number): Promi
   const height = preppedData.length;
   const width = preppedData[0].length;
   const threshold = Math.round(height * width * 0.05);
-  console.log(preppedData);
-
-  // Compute connected components and coherence pairs
   const { connectedComponents, coherencePairs } = computeConnectedComponents(preppedData, threshold);
-
-  // Compute color coherence vector
-  console.log(connectedComponents, coherencePairs);
   const colorCoherenceVector = computeColorCoherenceVector(coherencePairs);
-  console.log(colorCoherenceVector);
   return colorCoherenceVector;
 }
 
@@ -85,7 +78,7 @@ function exploreConnectedComponent(
   }
 
   if (componentSize < threshold) {
-    coherentSize = 0; // Reset coherent size if the component size is below the threshold
+    coherentSize = 0;
   }
 
   return { componentSize, coherentSize };
@@ -108,17 +101,31 @@ function getNeighbors(x: number, y: number, width: number, height: number): [num
 function computeColorCoherenceVector(coherencePairs: { [key: number]: { alpha: number, beta: number, color: number } }): number[][] {
   const numColors = 24;
   const colorCoherenceVector: number[][] = new Array(numColors);
-
   for (const componentLabel in coherencePairs) {
     const { alpha, beta, color } = coherencePairs[componentLabel];
-
     if (!colorCoherenceVector[color]) {
       colorCoherenceVector[color] = [0, 0];
     }
-
     colorCoherenceVector[color][0] += alpha;
     colorCoherenceVector[color][1] += beta;
   }
-
   return colorCoherenceVector;
+}
+
+export function ccvDistance(ccvOne: number[][], ccvTwo: number[][]): number {
+  const numBuckets = Math.max(ccvOne.length, ccvTwo.length);
+  let deltaH = 0;
+  let deltaG = 0;
+
+  for (let j = 0; j < numBuckets; j++) {
+    const alphaOne = ccvOne[j]?.[0] || 0;
+    const betaOne = ccvOne[j]?.[1] || 0;
+    const alphaTwo = ccvTwo[j]?.[0] || 0;
+    const betaTwo = ccvTwo[j]?.[1] || 0;
+
+    deltaH += Math.abs(alphaOne + betaOne - alphaTwo - betaTwo);
+    deltaG += Math.abs(alphaOne - alphaTwo) + Math.abs(betaOne - betaTwo);
+  }
+
+  return deltaG;
 }
