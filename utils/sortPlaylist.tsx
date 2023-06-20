@@ -28,7 +28,7 @@ export default async function sortPlaylist(
     })
   );
   const sortedLoop = ccvSort(trackIdWithCcv);
-  const batchedTracks = splitToBatches(tracks, 95);
+  const batchedTracks = splitToBatches(tracks, 100);
   console.log(batchedTracks);
   await Promise.all(
     batchedTracks.map(async (batch) => {
@@ -40,7 +40,7 @@ export default async function sortPlaylist(
       );
     })
   );
-  const batchedSortedTracks = splitToBatches(sortedLoop, 95);
+  const batchedSortedTracks = splitToBatches(sortedLoop, 100);
   await Promise.all(
     batchedSortedTracks.map(async (batch) => {
       await spotifyApi.addTracksToPlaylist(
