@@ -1,147 +1,5 @@
 import SpotifyWebApi from "spotify-web-api-node";
 import getCCV, { ccvDistance } from "./imageProcessing";
-import loopSort, { resortLoop } from "./loopSorting";
-
-/**
- * """The main file for the Spotify Playlist Sorter"""
-from queue import Queue
-from threading import Thread
-from concurrent.futures import ThreadPoolExecutor
-from customtkinter import (
-    CTk,
-    CTkFrame,
-    CTkLabel,
-    CTkButton,
-    CTkComboBox,
-    CTkProgressBar,
-)
-from image_processing import ccv, ccv_distance
-from playlist_utils import (
-    get_playlist_items,
-    get_playlist_art,
-    reorder_playlist,
-    remove_duplicates,
-    playlists,
-    get_playlist_id,
-)
-from loop_sorting import loop_sort, resort_loop
-
-
-def ccv_sort(playlist_id: str) -> list[str]:
-    """Sorts a playlist using CCVs"""
-    items = get_playlist_items(playlist_id)
-    items = remove_duplicates(items)
-    entries = make_ccv_collection(items, ccv)
-    loop = loop_sort(entries, ccv_distance)
-    loop = resort_loop(loop, ccv_distance, len(loop))
-    return [loop[i][0] for i in range(0, len(loop))]
-
-
-def make_ccv_collection(playlist_items: tuple, calculate_ccv: callable) -> list[str, str]:
-    """Makes a collection of CCVs from a playlist"""
-    tuple_collection: list[str, str] = []
-    result_queue: Queue[tuple[str, str]] = Queue()
-
-    def process_item(to_process: dict[str, str]) -> None:
-        """Processes an item in the playlist"""
-        track: dict[str, str] = to_process["track"]
-        track_id: str = track["id"]
-        url: str = track["album"]["images"][-1]["url"]
-        result_queue.put((track_id, calculate_ccv(url)))
-
-    with ThreadPoolExecutor() as executor:
-        for item in playlist_items:
-            executor.submit(process_item, item)
-
-    while not result_queue.empty():
-        tuple_collection.append(result_queue.get())
-
-    return tuple_collection
-
-
-def sort_playlist(playlist_id: str) -> None:
-    """Sorts a playlist by the given algorithm"""
-    sorted_track_ids: list[str] = ccv_sort(playlist_id)
-    reorder_playlist(playlist_id, sorted_track_ids)
-    ccv_distance.cache_clear()
-    app.progress_bar.set(100, 100)
-
-
-class App(CTk):
-    """The main application class"""
-
-    def __init__(self) -> None:
-        super().__init__()
-        green: str = "#1DB954"
-        black: str = "#191414"
-        self.title("Spotify Playlist Sorter")
-        self.geometry(f"{1100}x{580}")
-        self.resizable(False, False)
-        self.title_label: CTkLabel = CTkLabel(self, text="Spotify Playlist Sorter")
-        self.title_label.pack(padx=10, pady=10)
-        self.center_frame: CTkFrame = CTkFrame(self)
-        self.center_frame.pack(padx=10, pady=10)
-        self.album_art: CTkLabel = CTkLabel(self.center_frame, text="")
-        self.album_art.configure(width=250, height=250)
-        self.album_art.pack()
-        self.dropdown: CTkComboBox = CTkComboBox(
-            self,
-            values=[playList["name"] for playList in playlists["items"]],
-            command=self.dropdown_changed,
-        )
-        self.dropdown.configure(state="readonly")
-        self.dropdown.pack(padx=10, pady=10)
-        self.button: CTkButton = CTkButton(
-            self,
-            text="Sort",
-            command=self.sort_playlist,
-            fg_color=green,
-            text_color=black,
-        )
-        self.button.pack(padx=10, pady=10)
-        self.progress_bar: CTkProgressBar = CTkProgressBar(
-            self, mode="indeterminate", progress_color=green, bg_color=black
-        )
-        self.progress_bar.set(0, 100)
-        self.progress_bar.pack(padx=10, pady=10)
-        self.dropdown_changed(None)
-
-    def dropdown_changed(self, _: any) -> None:
-        """Called when the dropdown is changed"""
-        album_art_thread = Thread(target=self.get_album_art)
-        album_art_thread.start()
-
-    def sort_playlist(self) -> None:
-        """Sorts a playlist"""
-        playlist_id = get_playlist_id(self.dropdown.get())
-        sorting_thread = Thread(target=sort_playlist, args=(playlist_id,))
-        sorting_thread.start()
-        self.button.configure(state="disabled")
-        self.progress_bar.start()
-        while sorting_thread.is_alive():
-            self.update()
-        self.button.configure(state="normal")
-        self.progress_bar.stop()
-        self.progress_bar.destroy()
-        self.progress_bar = CTkProgressBar(self, mode="indeterminate")
-        self.progress_bar.set(0, 100)
-        self.progress_bar.pack(padx=10, pady=10)
-
-    def get_album_art(self) -> None:
-        """Gets the album art for the selected playlist"""
-        playlist_id = get_playlist_id(self.dropdown.get())
-        art = get_playlist_art(playlist_id)
-        self.album_art.destroy()
-        self.album_art = CTkLabel(self.center_frame, text="")
-        self.album_art.configure(image=art)
-        self.album_art.image = art
-        self.album_art.pack(fill="both", expand="yes")
-
-
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
- */
 
 const imageSize = 32;
 
@@ -169,11 +27,110 @@ export default async function sortPlaylist(
 		}),
 	);
     const sortedLoop = ccvSort(trackIdWithCcv);
-	console.log(sortedLoop);
+    await spotifyApi.removeTracksFromPlaylist(playlistId, tracks.map((track) => {
+        return { uri: track.track!.uri };
+    }));
+    await spotifyApi.addTracksToPlaylist(playlistId, sortedLoop.map((trackId) => {
+        return `spotify:track:${trackId}`;
+    }));
 }
 
 function ccvSort(trackIdWithCcv: [string, number[][]][]) {
-    const loop = loopSort(trackIdWithCcv, ccvDistance);
-	// const sortedLoop = resortLoop(loop, ccvDistance, loop.length);
-	return loop.map((item) => item[0]);
+    const ccvCollection = trackIdWithCcv.map((track) => {
+        return { label: track[0], ccv: track[1] };
+    });
+    const sortedCollection = sortCCVsByDistance(ccvCollection);
+    return sortedCollection;
 }
+
+function sortCCVsByDistance(ccvCollection: { label: string, ccv: number[][] }[]): string[] {
+    const numCCVs = ccvCollection.length;
+    const distanceMatrix: number[][] = [];
+  
+    // Calculate the distance matrix
+    for (let i = 0; i < numCCVs; i++) {
+      const distances: number[] = [];
+      for (let j = 0; j < numCCVs; j++) {
+        if (i === j) {
+          distances.push(0); // Distance to itself is 0
+        } else {
+          const distance = ccvDistance(ccvCollection[i].ccv, ccvCollection[j].ccv);
+          distances.push(distance);
+        }
+      }
+      distanceMatrix.push(distances);
+    }
+  
+    // Solve the TSP problem to find the optimal ordering
+    const tspResult = solveTSP(distanceMatrix);
+  
+    // Reorder the CCV collection based on the TSP result
+    const sortedCCVs = tspResult.map((index) => ccvCollection[index].label);
+  
+    return sortedCCVs;
+  }
+  
+  function solveTSP(distanceMatrix: number[][]): number[] {
+    const numVertices = distanceMatrix.length;
+  
+    // Start with an arbitrary vertex (0) as the initial solution
+    const initialSolution = [0];
+    for (let i = 1; i < numVertices; i++) {
+      initialSolution.push(i);
+    }
+  
+    let bestSolution = initialSolution.slice();
+    let bestDistance = getTotalDistance(bestSolution, distanceMatrix);
+  
+    // Perform iterative improvement using 2-opt optimization
+    let improved = true;
+    while (improved) {
+      improved = false;
+      for (let i = 0; i < numVertices - 1; i++) {
+        for (let j = i + 1; j < numVertices; j++) {
+          const newSolution = opt2Swap(bestSolution, i, j);
+          const newDistance = getTotalDistance(newSolution, distanceMatrix);
+          if (newDistance < bestDistance) {
+            bestSolution = newSolution;
+            bestDistance = newDistance;
+            improved = true;
+          }
+        }
+      }
+    }
+  
+    return bestSolution;
+  }
+  
+  function opt2Swap(solution: number[], i: number, j: number): number[] {
+    const newSolution = solution.slice();
+    let k = i + 1;
+    let l = j;
+  
+    while (k < l) {
+      const temp = newSolution[k];
+      newSolution[k] = newSolution[l];
+      newSolution[l] = temp;
+      k++;
+      l--;
+    }
+  
+    return newSolution;
+  }
+  
+  function getTotalDistance(solution: number[], distanceMatrix: number[][]): number {
+    let distance = 0;
+    const numVertices = solution.length;
+  
+    for (let i = 0; i < numVertices - 1; i++) {
+      const from = solution[i];
+      const to = solution[i + 1];
+      distance += distanceMatrix[from][to];
+    }
+  
+    // Add the distance from the last vertex back to the starting vertex
+    distance += distanceMatrix[solution[numVertices - 1]][solution[0]];
+  
+    return distance;
+  }
+  
