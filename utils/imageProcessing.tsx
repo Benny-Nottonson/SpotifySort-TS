@@ -9,7 +9,10 @@ export default async function getCCV(imageUrl: string, imageSize: number) {
 	);
 	const sizeThreshold: number = Math.round(0.01 * imageSize * imageSize) * 2;
 	const macbethImage: Array<Array<number>> = bgrImageToMac(bgrImageBytes);
-	const [nBlobs, blob]: [number, number[][]] = blobExtract(macbethImage);
+	console.log(macbethImage);
+	const [blob, nBlobs]: [number[][], number] = blobExtract(macbethImage);
+	console.log(blob);
+	console.log(nBlobs);
 	const table: Array<Array<[number, number]>> = new Array<
 		Array<[number, number]>
 	>(blob.length)
@@ -46,20 +49,9 @@ export default async function getCCV(imageUrl: string, imageSize: number) {
 	return colorCoherenceVector;
 }
 
-function blobExtract(macbethImage: number[][]): [number, number[][]] {
-	const [blob] = label(macbethImage);
-	const incrementedBlob = blob.map((row) => row.map((element) => element + 1));
-	let nBlobs = Math.max(...blob.flat());
-	if (nBlobs > 1) {
-		const count = new Array<number>(nBlobs + 1).fill(0);
-		for (const row of incrementedBlob) {
-			for (const element of row) {
-				count[element]++;
-			}
-		}
-		nBlobs += count.filter((value) => value > 1).length;
-	}
-	return [nBlobs, incrementedBlob];
+function blobExtract(macbethImage: number[][]): [number[][], number] {
+	const [blob, nBlobs] = label(macbethImage);
+	return [blob, nBlobs];
 }
 
 function xyzToLab(xyz: Array<number>): Array<number> {
