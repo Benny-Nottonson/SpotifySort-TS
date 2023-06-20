@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { PlaylistProp } from "@/types/types";
 import sortPlaylist from "@/utils/sortPlaylist";
+import prepImage from "@/utils/imagePreprocess";
+
+prepImage('https://i.scdn.co/image/ab67706c0000bebbfcaac4366f8bee348abc6659', 32);
 
 const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 	const [playlist, setPlaylist] = useState<any>(null);

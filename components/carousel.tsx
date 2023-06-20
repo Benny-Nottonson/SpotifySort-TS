@@ -59,8 +59,8 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
 
 	return (
 		<div className="relative w-screen">
-			<ArrowPrev onClick={handleNext} />
-			<ArrowNext onClick={handlePrev} />
+			<ArrowPrev onClick={handlePrev} />
+			<ArrowNext onClick={handleNext} />
 			<div className="text-center w-auto relative z-0 car duration-300 ease-in-out">
 				<Carousel
 					arrows={false}

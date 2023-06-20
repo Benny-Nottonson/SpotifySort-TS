@@ -143,7 +143,7 @@ if __name__ == "__main__":
     app.mainloop()
  */
 
-const imageSize = 24;
+const imageSize = 32;
 
 export default async function sortPlaylist(
 	playlistId: string,
@@ -174,7 +174,6 @@ export default async function sortPlaylist(
 
 function ccvSort(trackIdWithCcv: [string, number[][]][]) {
     const loop = loopSort(trackIdWithCcv, ccvDistance);
-    console.log(loop);
 	// const sortedLoop = resortLoop(loop, ccvDistance, loop.length);
 	return loop.map((item) => item[0]);
 }
