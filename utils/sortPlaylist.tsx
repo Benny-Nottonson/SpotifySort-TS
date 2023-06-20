@@ -10,8 +10,8 @@ export default async function sortPlaylist(
 ) {
   const spotifyApi = new SpotifyWebApi();
   spotifyApi.setAccessToken(bearerToken);
-  const data = await spotifyApi.getPlaylist(playlistId);
-  const tracks = data.body.tracks.items;
+  const playlist = await getFullPlaylist(playlistId, spotifyApi);
+  const tracks = playlist.tracks.items;
   const trackIdWithImage: Track[] = tracks.map((track) => {
     if (!track.track) {
       throw new Error("Track is undefined");
@@ -28,18 +28,64 @@ export default async function sortPlaylist(
     })
   );
   const sortedLoop = ccvSort(trackIdWithCcv);
-  await spotifyApi.removeTracksFromPlaylist(
-    playlistId,
-    tracks.map((track) => {
-      return { uri: track.track!.uri };
+  const batchedTracks = splitToBatches(tracks, 95);
+  console.log(batchedTracks);
+  await Promise.all(
+    batchedTracks.map(async (batch) => {
+      await spotifyApi.removeTracksFromPlaylist(
+        playlistId,
+        batch.map((track: SpotifyApi.PlaylistTrackObject) => {
+          return { uri: track.track!.uri };
+        })
+      );
     })
   );
-  await spotifyApi.addTracksToPlaylist(
-    playlistId,
-    sortedLoop.map((trackId) => {
-      return `spotify:track:${trackId}`;
+  const batchedSortedTracks = splitToBatches(sortedLoop, 95);
+  await Promise.all(
+    batchedSortedTracks.map(async (batch) => {
+      await spotifyApi.addTracksToPlaylist(
+        playlistId,
+        batch.map((trackId: SpotifyApi.PlaylistTrackObject) => {
+          return `spotify:track:${trackId}`;
+        })
+      );
     })
   );
+}
+
+function splitToBatches(array: any[], batchSize: number): any[] {
+  const batches = [];
+  for (let i = 0; i < array.length; i += batchSize) {
+    batches.push(array.slice(i, i + batchSize));
+  }
+  return batches;
+}
+
+async function getFullPlaylist(playlistId: string, spotifyApi: SpotifyWebApi) {
+  const limit = 100;
+  let offset = 0;
+  let allTracks: SpotifyApi.PlaylistTrackObject[] = [];
+
+  while (true) {
+    const data = await spotifyApi.getPlaylistTracks(playlistId, {
+      limit,
+      offset,
+    });
+
+    allTracks = allTracks.concat(data.body.items);
+
+    if (data.body.next) {
+      offset += limit;
+    } else {
+      break;
+    }
+  }
+
+  return {
+    tracks: {
+      items: allTracks,
+    },
+  };
 }
 
 function ccvSort(trackIdWithCcv: TrackWithCCV[]) {
