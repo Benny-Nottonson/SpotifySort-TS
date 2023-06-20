@@ -86,9 +86,10 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     .slice(0, 5)
     .map((item: { track: any }) => item.track);
 
+  console.log(tracks);
   const playlistDuration: number = tracks?.items.reduce(
     (acc: number, item: { track: { duration_ms?: number } }) =>
-      acc + (item.track.duration_ms || 0),
+      acc + (item.track?.duration_ms || 0),
     0
   ) || 0;
   const durationInMinutes = Math.floor(playlistDuration / 60000);
