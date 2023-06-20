@@ -27,7 +27,7 @@ const ArrowNext = ({ onClick }: { onClick: () => void }) => (
 
 const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
   const controllerRef = useRef<CarouselControllerHandle>(null);
-  const blur = "blur";
+  const blur = "blur-sm";
 
   const handlePrev = () => {
     const carousel = document.querySelector(".car");
