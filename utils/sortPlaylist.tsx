@@ -29,7 +29,6 @@ export default async function sortPlaylist(
   );
   const sortedLoop = ccvSort(trackIdWithCcv);
   const batchedTracks = splitToBatches(tracks, 100);
-  console.log(batchedTracks);
   await Promise.all(
     batchedTracks.map(async (batch) => {
       await spotifyApi.removeTracksFromPlaylist(

@@ -5,6 +5,7 @@ import { PlaylistProp } from "@/types";
 
 const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
   const [playlist, setPlaylist] = useState<any>(null);
+  const [isSorting, setIsSorting] = useState(false);
   const maxCharacters = 15;
 
   useEffect(() => {
@@ -40,8 +41,10 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     fetchPlaylist();
   }, [token, playlistId]);
 
-  const handleSortPlaylist = () => {
-    sortPlaylist(playlistId, token);
+  const handleSortPlaylist = async () => {
+    setIsSorting(true);
+    await sortPlaylist(playlistId, token);
+    setIsSorting(false);
   };
 
   if (!playlist) {
@@ -134,11 +137,37 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                 {songCount} songs
               </p>
               <button
-                className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg shadow-md ml-4"
-                onClick={handleSortPlaylist}
-              >
-                Sort Playlist
-              </button>
+                  className={`px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg shadow-md ml-4 ${
+                    isSorting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={handleSortPlaylist}
+                  disabled={isSorting}
+                >
+                  {isSorting ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-green-500 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm10 3.647A7.962 7.962 0 0020 12h-4a7.962 7.962 0 01-3 7.938l3-2.647zm-6-9.578V2.362C9.973 2.135 10.978 2 12 2c4.411 0 8 3.589 8 8h-2c0-3.859-3.14-7-7-7z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    "Sort Playlist"
+                  )}
+                </button>
             </div>
           </div>
         </div>
