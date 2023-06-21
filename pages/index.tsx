@@ -5,6 +5,7 @@ import Button from "../components/button";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { MySession } from "@/types";
+import BubbleBackground from '../components/background';
 
 interface UseSession {
   data: MySession | null;
@@ -39,8 +40,9 @@ export default function Home() {
       <Head>
         <title>Spotify Next-Auth Token Rotation</title>
       </Head>
+      <BubbleBackground />
       {!session && (
-        <div>
+        <div className="z-50">
           <p>Not signed in</p>
           <Button text="Sign in" onEvent={handleSignIn} icon={faSpotify} />
         </div>
