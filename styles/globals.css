@@ -34,7 +34,7 @@ body {
   border-radius: 16px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  filter: blur(4px);
+  filter: blur(3px);
 }
 [class^="Carousel-module_prev"],
 [class*=" Carousel-module_prev"] {

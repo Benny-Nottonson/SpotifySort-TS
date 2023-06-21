@@ -98,10 +98,11 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 
   return (
     <div className="flex items-center justify-center w-auto">
+      <div className="relative bg-blue-500/10 rounded-xl perspective-800 rotate-y-2 ease-in border border-zinc-200/50 shadow-sm">
       <div className="relative bg-white bg-opacity-40 border-1 border-white border-opacity-15 rounded-lg shadow-xl backdrop-filter backdrop-blur-lg p-4">
-        <div className="flex">
+        <div className="flex ">
           {playlistImage && (
-            <div className="relative h-64 w-64 mr-4">
+            <div className="relative h-64 w-64 mr-4 bg-blue-500/10 rounded-xl perspective-800 rotate-y-8 transition-transform duration-300 ease-in border border-zinc-200/50 shadow-xs">
               <Image
                 src={playlistImage}
                 alt="Playlist"
@@ -140,6 +141,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

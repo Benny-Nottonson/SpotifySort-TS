@@ -27,14 +27,14 @@ const ArrowNext = ({ onClick }: { onClick: () => void }) => (
 
 const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
   const controllerRef = useRef<CarouselControllerHandle>(null);
-  const blur = "blur-sm";
+  const blur = ["ease-out", "duration-500", "blur"];
 
   const handlePrev = () => {
     const carousel = document.querySelector(".car");
     if (carousel) {
-      carousel.classList.add(blur);
+      blur.forEach((className) => carousel.classList.add(className));
       setTimeout(() => {
-        carousel.classList.remove(blur);
+        blur.forEach((className) => carousel.classList.remove(className));
       }, 300);
     }
     if (controllerRef.current) {
@@ -45,9 +45,9 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
   const handleNext = () => {
     const carousel = document.querySelector(".car");
     if (carousel) {
-      carousel.classList.add(blur);
+      blur.forEach((className) => carousel.classList.add(className));
       setTimeout(() => {
-        carousel.classList.remove(blur);
+        blur.forEach((className) => carousel.classList.remove(className));
       }, 300);
     }
     if (controllerRef.current) {

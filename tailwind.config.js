@@ -12,7 +12,25 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      transformOrigin: {
+        '0': '0%',
+      },
     },
   },
-  plugins: [],
+  variants: {},
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.perspective-800': {
+          perspective: '800px',
+        },
+        '.rotate-y-2': {
+          transform: 'rotateY(-6deg)',
+        },
+        '.rotate-y-1': {
+          transform: 'rotateY(2deg)',
+        },
+      });
+    },
+  ],
 };
