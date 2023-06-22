@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
 
-interface ButtonProps {
+interface ArrowProps {
   onEvent?: () => void;
-  image: string;
+  lr: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ onEvent, image }) => {
+const Arrow: React.FC<ArrowProps> = ({ onEvent, lr }) => {
+    const image = lr ? "arrowR.png" : "arrowL.png";
   return (
     <button
       className={
@@ -16,12 +17,12 @@ const Button: React.FC<ButtonProps> = ({ onEvent, image }) => {
     >
       <Image 
         src={'/' + image}
-        alt="button"
-        width={140}
-        height={30}
+        alt="arrow"
+        width={40}
+        height={40}
       />
     </button>
   );
 };
 
-export default Button;
+export default Arrow;

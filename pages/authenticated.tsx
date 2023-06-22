@@ -4,7 +4,8 @@ import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Button from "../components/button";
 import MyCarousel from "../components/carousel";
-import BubbleBackground from '../components/background';
+import BubbleBackground from "../components/background";
+import BrightText from "../components/brightText";
 
 export default function App() {
   const router = useRouter();
@@ -59,18 +60,19 @@ export default function App() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-2 bg-white overflow-x-hidden">
-        <BubbleBackground />
+    <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
+      <BubbleBackground />
+      <BrightText />
       <Head>
-        <title>Spotify Next-Auth Token Rotation</title>
+        <title>Spotify Sort</title>
       </Head>
-      <div className="pb-8 z-10">
-        <Button text="Sign Out" onEvent={handleSignOut} />
-      </div>
       <div>
         {bearerToken && (
           <MyCarousel playlistIDs={playlistIDs} token={bearerToken} />
         )}
+      </div>
+      <div className="pt-8 z-10">
+        <Button image="signoutButton.png" onEvent={handleSignOut} />
       </div>
     </main>
   );

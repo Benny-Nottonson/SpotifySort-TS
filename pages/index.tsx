@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Button from "../components/button";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { useSession, signIn } from "next-auth/react";
 import { MySession } from "@/types";
-import BubbleBackground from '../components/background';
+import BubbleBackground from "../components/background";
+import BrightText from "../components/brightText";
 
 interface UseSession {
   data: MySession | null;
@@ -31,20 +31,16 @@ export default function Home() {
     signIn("spotify", { callbackUrl: process.env.REDIRECT_URI });
   };
 
-  const handleSignOut = () => {
-    signOut();
-  };
-
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-2 bg-white overflow-x-hidden">
+    <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
       <Head>
-        <title>Spotify Next-Auth Token Rotation</title>
+        <title>Spotify Sort</title>
       </Head>
+      <BrightText />
       <BubbleBackground />
       {!session && (
         <div className="z-50">
-          <p>Not signed in</p>
-          <Button text="Sign in" onEvent={handleSignIn} icon={faSpotify} />
+          <Button image={"signinButton.png"}onEvent={handleSignIn} />
         </div>
       )}
     </main>

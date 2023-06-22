@@ -1,59 +1,22 @@
-import { useCallback } from "react";
-import type { Engine } from "tsparticles-engine";
-import Particles from "react-particles";
-import { loadFull } from "tsparticles";
+import Spline from '@splinetool/react-spline';
+import Image from "next/image";
 
 const BubbleBackground = () => {
-    const particlesInit = useCallback(async (engine: Engine) => {
-        await loadFull(engine);
-    }, []);
-
-    const particlesLoaded = useCallback(async () => {}, []);
-    return (
-        <Particles
-            id="tsparticles"
-            init={particlesInit}
-            loaded={particlesLoaded}
-            options={{
-                background: {
-                    color: {
-                        value: "#ffffff",
-                    },
-                },
-                fpsLimit: 144,
-                particles: {
-                    color: {
-                        value: "#22C55E",
-                    },
-                    collisions: {
-                        enable: true,
-                    },
-                    move: {
-                        direction: "none",
-                        enable: true,
-                        outModes: {
-                            default: "bounce",
-                        },
-                        random: false,
-                        speed: 3,
-                        straight: false,
-                    },
-                    number: {
-                        value: 100,
-                    },
-                    opacity: {
-                        value: 0.5,
-                    },
-                    shape: {
-                        type: "circle",
-                    },
-                    size: {
-                        value: { min: 1, max: 5 },
-                    },
-                },
-            }}
-        />
-    );
+  return (
+    <>
+    <div className='-z-50 absolute w-screen h-screen'>
+      <Image
+        src="/titlePreloadedImage.png"
+        alt="title preloaded image"
+        fill
+        style={{ objectFit : "cover" }}
+      ></Image>
+    </div>
+    <div className='-z-1 absolute w-screen h-screen'>
+      <Spline scene="https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode" />
+    </div>
+    </>
+  );
 };
 
 export default BubbleBackground;
