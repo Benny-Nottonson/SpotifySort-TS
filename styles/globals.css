@@ -62,6 +62,6 @@ body {
 }
 
 .dropShadow {
-  text-shadow:0 0 20px #22c55e;
+  text-shadow: 0 0 20px #22c55e;
   mix-blend-mode: exclusion;
 }

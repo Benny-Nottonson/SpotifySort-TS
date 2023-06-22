@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Button from "../components/button";
 import { useSession, signIn } from "next-auth/react";
 import { MySession } from "@/types";
-import BubbleBackground from "../components/background";
-import BrightText from "../components/brightText";
+import BubbleBackground from "@/components/background";
+import BrightText from "@/components/brightText";
+import Button from "@/components/button";
 
 interface UseSession {
   data: MySession | null;
@@ -32,17 +32,19 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
+    <>
       <Head>
         <title>Spotify Sort</title>
       </Head>
-      <BrightText />
-      <BubbleBackground />
-      {!session && (
-        <div className="z-50">
-          <Button image={"signinButton.png"}onEvent={handleSignIn} />
-        </div>
-      )}
-    </main>
+      <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
+        <BrightText />
+        <BubbleBackground />
+        {!session && (
+          <div className="z-50">
+            <Button image={"signinButton.png"} onEvent={handleSignIn} />
+          </div>
+        )}
+      </main>
+    </>
   );
 }

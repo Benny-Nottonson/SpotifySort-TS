@@ -10,16 +10,20 @@ import BrightText from "../components/brightText";
 export default function App() {
   const router = useRouter();
   const { session } = router.query;
-  const [bearerToken, setBearerToken] = useState(null);
-  const [playlistIDs, setPlaylistIDs] = useState([]);
+  const [authData, setAuthData] = useState({
+    bearerToken: null,
+    playlistIDs: [],
+  });
 
   useEffect(() => {
     if (!session) {
       router.push("/");
-    }
-    if (session) {
+    } else {
       const parsedSession = JSON.parse(session as string);
-      setBearerToken(parsedSession.user.accessToken);
+      setAuthData((prevState) => ({
+        ...prevState,
+        bearerToken: parsedSession.user.accessToken,
+      }));
     }
   }, [session, router]);
 
@@ -30,13 +34,16 @@ export default function App() {
           "https://api.spotify.com/v1/me/playlists",
           {
             headers: {
-              Authorization: `Bearer ${bearerToken}`,
+              Authorization: `Bearer ${authData.bearerToken}`,
             },
           }
         );
         if (response.ok) {
           const data = await response.json();
-          setPlaylistIDs(data.items.map((item: { id: string }) => item.id));
+          setAuthData((prevState) => ({
+            ...prevState,
+            playlistIDs: data.items.map((item: { id: string }) => item.id),
+          }));
         } else {
           console.error(
             "Error fetching playlists:",
@@ -50,30 +57,35 @@ export default function App() {
       }
     };
 
-    if (bearerToken) {
+    if (authData.bearerToken) {
       fetchPlaylists();
     }
-  }, [bearerToken]);
+  }, [authData.bearerToken]);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
-      <BubbleBackground />
-      <BrightText />
+    <>
       <Head>
         <title>Spotify Sort</title>
       </Head>
-      <div>
-        {bearerToken && (
-          <MyCarousel playlistIDs={playlistIDs} token={bearerToken} />
-        )}
-      </div>
-      <div className="pt-8 z-10">
-        <Button image="signoutButton.png" onEvent={handleSignOut} />
-      </div>
-    </main>
+      <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
+        <BubbleBackground />
+        <BrightText />
+        <div>
+          {authData.bearerToken && (
+            <MyCarousel
+              playlistIDs={authData.playlistIDs}
+              token={authData.bearerToken}
+            />
+          )}
+        </div>
+        <div className="pt-8 z-10">
+          <Button image="signoutButton.png" onEvent={handleSignOut} />
+        </div>
+      </main>
+    </>
   );
 }
