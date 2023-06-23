@@ -81,7 +81,7 @@ export default function App() {
           )}
         </div>
         <div className="pt-8 z-10">
-          <Button image="signoutButton.png" onEvent={handleSignOut} />
+          <Button text="Sign Out" onEvent={handleSignOut} />
         </div>
       </main>
     </>

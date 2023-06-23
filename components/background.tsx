@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Canvas } from "@react-three/fiber";
-import { BufferGeometry } from "three/src/core/BufferGeometry";
-import { Mesh } from "three/src/objects/Mesh";
-import { Material } from "three/src/materials/Material";
+import { BufferGeometry, Mesh, Material } from "three";
 import { OrthographicCamera } from "@react-three/drei";
 import useSpline from "@splinetool/r3f-spline";
 
@@ -22,6 +20,21 @@ type AnimatedCircleProps = {
   rotation: [number, number, number];
 };
 
+const getRandomMultiplier = () => {
+  return 0.8 + Math.random() * 0.4;
+};
+
+let cachedSplineData: { nodes: Record<string, any>; materials: Record<string, any>; } | null = null;
+
+const useSplineData = () => {
+  if (!cachedSplineData) {
+    cachedSplineData = useSpline("https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode");
+  }
+
+  return cachedSplineData;
+};
+
+
 function AnimatedCircle({
   delay,
   direction,
@@ -31,9 +44,9 @@ function AnimatedCircle({
   ...props
 }: AnimatedCircleProps) {
   const meshRef = useRef<Mesh<BufferGeometry, Material> | null>(null);
+  const [isScaled, setIsScaled] = useState(false);
   const startPosition = position[1];
   const targetPosition = startPosition + distance;
-  const [isScaled, setIsScaled] = useState(false);
 
   useEffect(() => {
     const timeline = gsap.timeline({ repeat: -1, yoyo: true });
@@ -70,17 +83,12 @@ function AnimatedCircle({
     };
   }, [delay, distance, startPosition, targetPosition, velocity, isScaled]);
 
-  const getRandomMultiplier = () => {
-    return 0.8 + Math.random() * 0.4;
-  };
-
   return <mesh ref={meshRef} position={position} {...props} />;
 }
 
 function Scene({ ...props }) {
-  const { nodes, materials } = useSpline(
-    "https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode"
-  );
+  const { nodes, materials } = useSplineData();
+
   return (
     <>
       <color attach="background" args={["#000414"]} />

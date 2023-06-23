@@ -42,8 +42,3 @@ html {
 [class*=" Carousel-module_itemContainer"] {
   backdrop-filter: none !important;
 }
-
-.dropShadow {
-  text-shadow: 0 0 20px #22c55e;
-  mix-blend-mode: exclusion;
-}

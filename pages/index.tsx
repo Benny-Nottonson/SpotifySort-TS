@@ -39,7 +39,7 @@ export default function Home() {
         <BrightText />
         {!session && (
           <div className="z-50">
-            <Button image={"signinButton.png"} onEvent={handleSignIn} />
+            <Button text={"Sign In"} onEvent={handleSignIn} />
           </div>
         )}
       </main>
