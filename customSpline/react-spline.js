@@ -5,7 +5,7 @@ import Ye, {
   useMemo as br,
   useEffect as Ue,
 } from "react";
-import { Application as gr } from "./customSplineRuntime/build/runtime.fixed";
+import { Application as gr } from "./customSplineRuntime/build/runtime.fixed.two";
 var Z =
     typeof globalThis < "u"
       ? globalThis
