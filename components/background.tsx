@@ -1,5 +1,7 @@
-import Spline from "@/customSpline/react-spline";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+const Spline = dynamic(() => import("@/customSpline/react-spline"), { ssr: false });
 
 const BubbleBackground = () => {
   const scene = "https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode";
