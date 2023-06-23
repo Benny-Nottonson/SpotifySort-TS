@@ -24,17 +24,6 @@ const getRandomMultiplier = () => {
   return 0.8 + Math.random() * 0.4;
 };
 
-let cachedSplineData: { nodes: Record<string, any>; materials: Record<string, any>; } | null = null;
-
-const useSplineData = () => {
-  if (!cachedSplineData) {
-    cachedSplineData = useSpline("https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode");
-  }
-
-  return cachedSplineData;
-};
-
-
 function AnimatedCircle({
   delay,
   direction,
@@ -87,7 +76,9 @@ function AnimatedCircle({
 }
 
 function Scene({ ...props }) {
-  const { nodes, materials } = useSplineData();
+  const { nodes, materials } = useSpline(
+    "https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode"
+  );
 
   return (
     <>
