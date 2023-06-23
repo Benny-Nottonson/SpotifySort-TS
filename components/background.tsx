@@ -1,7 +1,12 @@
-import useSpline from "@splinetool/r3f-spline";
-import { lazy, useEffect, useRef, useState, Suspense } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { BufferGeometry, Material, Mesh } from "three";
+import { Canvas } from "@react-three/fiber";
+import { BufferGeometry } from "three/src/core/BufferGeometry";
+import { Mesh } from "three/src/objects/Mesh";
+import { Material } from "three/src/materials/Material";
+import { OrthographicCamera } from "@react-three/drei";
+import useSpline from "@splinetool/r3f-spline";
+
 
 type AnimatedCircleProps = {
   delay: number;
@@ -71,9 +76,6 @@ function AnimatedCircle({
 
   return <mesh ref={meshRef} position={position} {...props} />;
 }
-
-const Canvas = lazy(() => import("@react-three/fiber").then((module) => ({ default: module.Canvas })));
-const OrthographicCamera = lazy(() => import("@react-three/drei").then((module) => ({ default: module.OrthographicCamera })));
 
 function Scene({ ...props }) {
   const { nodes, materials } = useSpline(
@@ -245,13 +247,11 @@ function Scene({ ...props }) {
 const BubbleBackground = () => {
   return (
     <>
-      <Suspense fallback={null}>
-        <div className="-z-1 absolute w-screen h-screen object-cover">
-          <Canvas>
-            <Scene />
-          </Canvas>
-        </div>
-      </Suspense>
+      <div className="-z-1 absolute w-screen h-screen object-cover">
+        <Canvas>
+          <Scene />
+        </Canvas>
+      </div>
     </>
   );
 };
