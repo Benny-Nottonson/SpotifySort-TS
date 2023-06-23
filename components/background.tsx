@@ -1,14 +1,8 @@
-import dynamic from "next/dynamic";
+import Spline from "@/customSpline/react-spline";
 import Image from "next/image";
 
 const BubbleBackground = () => {
   const scene = "https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode";
-
-  const Spline = dynamic(
-    () => import("@/customSpline/react-spline"),
-    { loading: () => <div>Loading...</div> }
-  );
-
   return (
     <>
       <div className="-z-50 absolute w-screen h-screen">
