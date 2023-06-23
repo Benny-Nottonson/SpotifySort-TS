@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useSession, signIn } from "next-auth/react";
 import { MySession } from "@/types";
-import BubbleBackground from "@/components/background";
 import BrightText from "@/components/brightText";
 import Button from "@/components/button";
 
@@ -38,7 +37,6 @@ export default function Home() {
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
         <BrightText />
-        <BubbleBackground />
         {!session && (
           <div className="z-50">
             <Button image={"signinButton.png"} onEvent={handleSignIn} />

@@ -4,7 +4,6 @@ import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Button from "../components/button";
 import MyCarousel from "../components/carousel";
-import BubbleBackground from "../components/background";
 import BrightText from "../components/brightText";
 
 export default function App() {
@@ -72,7 +71,6 @@ export default function App() {
         <title>Spotify Sort</title>
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
-        <BubbleBackground />
         <BrightText />
         <div>
           {authData.bearerToken && (
