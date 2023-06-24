@@ -23,7 +23,6 @@
     "eslint-config-next": "13.4.7",
     "gsap": "^3.12.1",
     "install": "^0.13.0",
-    "lamina": "^1.1.23",
     "next": "13.4.7",
     "next-auth": "^4.22.1",
     "postcss": "8.4.24",
