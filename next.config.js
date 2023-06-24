@@ -17,13 +17,7 @@ module.exports = withBundleAnalyzer({
           three$: path.resolve("./build/three-exports.js"),
         },
       },
-    }),
-    config.plugins.push(
-      new webpack.IgnorePlugin({
-        resourceRegExp: /^three$/,
-        contextRegExp: /three/,
-      }),
-    )
+    })
     return config; 
   }
 });
