@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Canvas } from "@react-three/fiber";
-import { BufferGeometry, Mesh, Material } from "three";
+import { BufferGeometry, Mesh, Material, SphereGeometry } from "three";
 import { OrthographicCamera } from "@react-three/drei";
-import useSpline from "@splinetool/r3f-spline";
+import { LayerMaterial, Fresnel, Normal, Color } from 'lamina'
 
 
 type AnimatedCircleProps = {
@@ -13,7 +13,6 @@ type AnimatedCircleProps = {
   distance: number;
   position: [number, number, number];
   geometry: any;
-  material: any;
   castShadow: boolean;
   receiveShadow: boolean;
   name: string;
@@ -71,29 +70,21 @@ function AnimatedCircle({
       timeline.kill();
     };
   }, [delay, distance, startPosition, targetPosition, velocity, isScaled]);
-
-  return <mesh ref={meshRef} position={position} {...props} />;
+    
+  return ( <mesh ref={meshRef} position={position} {...props}>
+            <LayerMaterial>
+                <Normal alpha={0.8}/>
+                <Fresnel bias={0.1} intensity={2} alpha={0.1}/>
+                <Color color={"#1DB954"} alpha={0.6}/>
+            </LayerMaterial>
+        </mesh> );
 }
 
 function Scene({ ...props }) {
-  const { nodes, materials } = useSpline(
-    "https://prod.spline.design/RBSwFfmfPdDv-eOh/scene.splinecode"
-  );
-
   return (
     <>
       <color attach="background" args={["#000414"]} />
       <group {...props} dispose={null}>
-        <group name="icon_create">
-          <mesh
-            name="Shape 0"
-            geometry={nodes["Shape 0"].geometry}
-            material={materials["Shape 0 Material"]}
-            castShadow
-            receiveShadow
-            position={[2.5, -2.5, 0]}
-          />
-        </group>
         <directionalLight
           name="Directional Light"
           castShadow
@@ -113,8 +104,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Top Right"
-          geometry={nodes["Sphere 10"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 60 )}
           castShadow
           receiveShadow
           position={[320, 190, -235]}
@@ -126,8 +116,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Center Right"
-          geometry={nodes["Sphere 11"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 150 )}
           castShadow
           receiveShadow
           position={[485, -95, 85]}
@@ -139,8 +128,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={nodes["Sphere 7"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 50 )}
           castShadow
           receiveShadow
           position={[-180, -170, 185]}
@@ -152,8 +140,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Right"
-          geometry={nodes["Sphere 6"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 140 )}
           castShadow
           receiveShadow
           position={[315, 350, 215]}
@@ -165,8 +152,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Left"
-          geometry={nodes["Sphere 4"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 160 )}
           castShadow
           receiveShadow
           position={[-400, 180, -225]}
@@ -178,8 +164,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Left"
-          geometry={nodes["Sphere 2"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 110 )}
           castShadow
           receiveShadow
           position={[-400, -195, 0]}
@@ -191,8 +176,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Center"
-          geometry={nodes["Sphere 3"].geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 140 )}
           castShadow
           receiveShadow
           position={[140, -325, 140]}
@@ -204,8 +188,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Center"
-          geometry={nodes.Sphere.geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 80 )}
           castShadow
           receiveShadow
           position={[200, -200, -150]}
@@ -217,8 +200,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={nodes.Sphere.geometry}
-          material={materials["Super Material"]}
+          geometry={new SphereGeometry( 80 )}
           castShadow
           receiveShadow
           position={[-525, -225, 180]}
