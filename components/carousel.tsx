@@ -43,21 +43,21 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
       <ArrowPrev onClick={handlePrev} />
       <ArrowNext onClick={handleNext} />
       <div className="text-center w-auto relative z-0 car duration-300 ease-in-out">
-          <Carousel
-            arrows={false}
-            dotsNavigation={false}
-            width="100%"
-            height="100%"
-            carouselStyle="3d"
-            ref={controllerRef}
-            outOfFocusDarken={false}
-          >
-            {slides.map((playlistId, index) => (
-              <div key={index}>
-                <Playlist playlistId={playlistId} token={token} />
-              </div>
-            ))}
-          </Carousel>
+        <Carousel
+          arrows={false}
+          dotsNavigation={false}
+          width="100%"
+          height="100%"
+          carouselStyle="3d"
+          ref={controllerRef}
+          outOfFocusDarken={false}
+        >
+          {slides.map((playlistId, index) => (
+            <div key={index}>
+              <Playlist playlistId={playlistId} token={token} />
+            </div>
+          ))}
+        </Carousel>
       </div>
     </div>
   );

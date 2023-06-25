@@ -1,7 +1,7 @@
 class Request {
   constructor(builder) {
     if (!builder) {
-      throw new Error('No builder supplied to constructor');
+      throw new Error("No builder supplied to constructor");
     }
 
     this.host = builder.host;
@@ -19,12 +19,14 @@ class Request {
   }
   getURI() {
     if (!this.scheme || !this.host || !this.port) {
-      throw new Error('Missing components necessary to construct URI');
+      throw new Error("Missing components necessary to construct URI");
     }
-    var uri = this.scheme + '://' + this.host;
-    if ((this.scheme === 'http' && this.port !== 80) ||
-      (this.scheme === 'https' && this.port !== 443)) {
-      uri += ':' + this.port;
+    var uri = this.scheme + "://" + this.host;
+    if (
+      (this.scheme === "http" && this.port !== 80) ||
+      (this.scheme === "https" && this.port !== 443)
+    ) {
+      uri += ":" + this.port;
     }
     if (this.path) {
       uri += this.path;
@@ -43,15 +45,15 @@ class Request {
     var queryParameters = this.getQueryParameters();
     if (queryParameters) {
       return (
-        '?' +
+        "?" +
         Object.keys(queryParameters)
           .filter(function (key) {
             return queryParameters[key] !== undefined;
           })
           .map(function (key) {
-            return key + '=' + queryParameters[key];
+            return key + "=" + queryParameters[key];
           })
-          .join('&')
+          .join("&")
       );
     }
   }
@@ -74,31 +76,24 @@ class Request {
   }
 }
 
+Request.prototype.getHost = Request.prototype._getter("host");
 
-Request.prototype.getHost = Request.prototype._getter('host');
+Request.prototype.getPort = Request.prototype._getter("port");
 
-Request.prototype.getPort = Request.prototype._getter('port');
+Request.prototype.getScheme = Request.prototype._getter("scheme");
 
-Request.prototype.getScheme = Request.prototype._getter('scheme');
+Request.prototype.getPath = Request.prototype._getter("path");
 
-Request.prototype.getPath = Request.prototype._getter('path');
+Request.prototype.getQueryParameters =
+  Request.prototype._getter("queryParameters");
 
-Request.prototype.getQueryParameters = Request.prototype._getter(
-  'queryParameters'
-);
+Request.prototype.getBodyParameters =
+  Request.prototype._getter("bodyParameters");
 
-Request.prototype.getBodyParameters = Request.prototype._getter(
-  'bodyParameters'
-);
-
-Request.prototype.getHeaders = Request.prototype._getter('headers');
-
-
-
-
+Request.prototype.getHeaders = Request.prototype._getter("headers");
 
 class Builder {
-  constructor() { }
+  constructor() {}
   _setter(key) {
     return function (value) {
       this[key] = value;
@@ -116,7 +111,7 @@ class Builder {
   }
   withAuth(accessToken) {
     if (accessToken) {
-      this.withHeaders({ Authorization: 'Bearer ' + accessToken });
+      this.withHeaders({ Authorization: "Bearer " + accessToken });
     }
     return this;
   }
@@ -124,7 +119,7 @@ class Builder {
     if (obj && Array.isArray(obj)) {
       return obj;
     }
-    if (obj && typeof obj === 'string') {
+    if (obj && typeof obj === "string") {
       return obj;
     }
     if (obj && Object.keys(obj).length > 0) {
@@ -137,29 +132,22 @@ class Builder {
   }
 }
 
+Builder.prototype.withHost = Builder.prototype._setter("host");
 
-Builder.prototype.withHost = Builder.prototype._setter('host');
+Builder.prototype.withPort = Builder.prototype._setter("port");
 
-Builder.prototype.withPort = Builder.prototype._setter('port');
+Builder.prototype.withScheme = Builder.prototype._setter("scheme");
 
-Builder.prototype.withScheme = Builder.prototype._setter('scheme');
+Builder.prototype.withPath = Builder.prototype._setter("path");
 
-Builder.prototype.withPath = Builder.prototype._setter('path');
+Builder.prototype.withQueryParameters =
+  Builder.prototype._assigner("queryParameters");
 
+Builder.prototype.withBodyParameters =
+  Builder.prototype._assigner("bodyParameters");
 
-Builder.prototype.withQueryParameters = Builder.prototype._assigner(
-  'queryParameters'
-);
+Builder.prototype.withHeaders = Builder.prototype._assigner("headers");
 
-Builder.prototype.withBodyParameters = Builder.prototype._assigner(
-  'bodyParameters'
-);
-
-Builder.prototype.withHeaders = Builder.prototype._assigner('headers');
-
-
-
-
-module.exports.builder = function() {
+module.exports.builder = function () {
   return new Builder();
 };

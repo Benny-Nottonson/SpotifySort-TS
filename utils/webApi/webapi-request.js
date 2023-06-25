@@ -1,8 +1,8 @@
-import { builder as b } from './base-request';
+import { builder as b } from "./base-request";
 
-var DEFAULT_HOST = 'api.spotify.com',
+var DEFAULT_HOST = "api.spotify.com",
   DEFAULT_PORT = 443,
-  DEFAULT_SCHEME = 'https';
+  DEFAULT_SCHEME = "https";
 
 export function builder(accessToken) {
   return b()

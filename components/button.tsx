@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = React.memo(({ onEvent, text }) => {
           "bg-gradient-to-br from-green-700 to-blue-600/50 via-teal-600/60 w-36 h-12 opacity-90 rounded-full pl-3"
         }
       >
-        <div className="flex justify-center items-center h-full" >
+        <div className="flex justify-center items-center h-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

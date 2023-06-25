@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Canvas } from "@react-three/fiber";
-import { BufferGeometry, Mesh, Material, SphereGeometry, ShaderMaterial, Color } from "three";
+import {
+  BufferGeometry,
+  Mesh,
+  Material,
+  SphereGeometry,
+  ShaderMaterial,
+  Color,
+} from "three";
 import { OrthographicCamera } from "@react-three/drei";
 
 type AnimatedCircleProps = {
@@ -44,11 +51,11 @@ function AnimatedCircle({
         y: 0,
         z: 0,
         duration: 1 * getRandomMultiplier(),
-        ease: 'power1.inOut',
+        ease: "power1.inOut",
         delay: delay * getRandomMultiplier(),
         onComplete: () => {
           setIsScaled(true);
-        }
+        },
       });
     }
 
@@ -74,7 +81,7 @@ function AnimatedCircle({
       alpha: { value: 0.8 },
       bias: { value: 0.1 },
       intensity: { value: 2 },
-      color: { value: new Color('#1DB954') },
+      color: { value: new Color("#1DB954") },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -114,8 +121,15 @@ function AnimatedCircle({
     }
    `,
   });
-    
-  return <mesh ref={meshRef} position={position} material={layerMaterial} {...props}/>;
+
+  return (
+    <mesh
+      ref={meshRef}
+      position={position}
+      material={layerMaterial}
+      {...props}
+    />
+  );
 }
 
 function Scene({ ...props }) {
@@ -142,7 +156,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Top Right"
-          geometry={new SphereGeometry( 60, 40, 20 )}
+          geometry={new SphereGeometry(60, 40, 20)}
           castShadow
           receiveShadow
           position={[320, 190, -235]}
@@ -154,7 +168,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Center Right"
-          geometry={new SphereGeometry( 150, 40, 20 )}
+          geometry={new SphereGeometry(150, 40, 20)}
           castShadow
           receiveShadow
           position={[485, -95, 85]}
@@ -166,7 +180,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={new SphereGeometry( 50, 40, 20 )}
+          geometry={new SphereGeometry(50, 40, 20)}
           castShadow
           receiveShadow
           position={[-180, -170, 185]}
@@ -178,7 +192,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Right"
-          geometry={new SphereGeometry( 140, 40, 20 )}
+          geometry={new SphereGeometry(140, 40, 20)}
           castShadow
           receiveShadow
           position={[315, 350, 215]}
@@ -190,7 +204,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Left"
-          geometry={new SphereGeometry( 160, 40, 20 )}
+          geometry={new SphereGeometry(160, 40, 20)}
           castShadow
           receiveShadow
           position={[-400, 180, -225]}
@@ -202,7 +216,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Left"
-          geometry={new SphereGeometry( 110, 40, 20 )}
+          geometry={new SphereGeometry(110, 40, 20)}
           castShadow
           receiveShadow
           position={[-400, -195, 0]}
@@ -214,7 +228,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Center"
-          geometry={new SphereGeometry( 140, 40, 20 )}
+          geometry={new SphereGeometry(140, 40, 20)}
           castShadow
           receiveShadow
           position={[140, -325, 140]}
@@ -226,7 +240,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Center"
-          geometry={new SphereGeometry( 80, 40, 20 )}
+          geometry={new SphereGeometry(80, 40, 20)}
           castShadow
           receiveShadow
           position={[200, -200, -150]}
@@ -238,7 +252,7 @@ function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={new SphereGeometry( 80, 40, 20 )}
+          geometry={new SphereGeometry(80, 40, 20)}
           castShadow
           receiveShadow
           position={[-525, -225, 180]}

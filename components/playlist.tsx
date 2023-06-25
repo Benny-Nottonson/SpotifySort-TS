@@ -51,9 +51,8 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     setIsSorting(false);
   };
 
-
   if (!playlist) {
-    return <div className="h-64 m-3"/>;
+    return <div className="h-64 m-3" />;
   }
 
   const { images, tracks } = playlist;
@@ -154,7 +153,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
         </div>
       </div>
     );
-  }else {
+  } else {
     return (
       <div className="flex items-center justify-center w-auto">
         <div className="p-4 block h-[80vw] w-[50vw] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl tracking-wide">
@@ -204,7 +203,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
           />
         </div>
       </div>
-    );    
+    );
   }
 };
 
