@@ -144,6 +144,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
             <Image
               src="/card.png"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority
               style={{ objectFit: "fill" }}
               className="brightness-110 -z-20"
