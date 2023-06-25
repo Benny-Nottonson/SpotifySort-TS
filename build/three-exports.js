@@ -1,7 +1,7 @@
 /**
  * SRC
  */
-export { REVISION } from 'three/src/constants';
+export * from 'three/src/constants';
 /**
  * Cameras
  */
@@ -43,7 +43,7 @@ export { Loader } from 'three/src/loaders/Loader';
 /**
  * Materials
  */
-export { RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshPhongMaterial, MeshBasicMaterial, Material } from 'three/src/materials/Materials';
+export { RawShaderMaterial, LineBasicMaterial,  ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshPhongMaterial, MeshBasicMaterial, Material } from 'three/src/materials/Materials';
 /**
  * Math
  */

@@ -16,7 +16,14 @@ module.exports = withBundleAnalyzer({
           three$: path.resolve("./build/three-exports.js"),
         },
       },
-    });
+    }),
+    module.exports = {
+      ignoreWarnings: [
+        {
+          module: /three\.js\?[34]/
+        }
+      ]
+    }
     return config;
   }
 });
