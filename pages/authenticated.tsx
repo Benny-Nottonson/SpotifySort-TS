@@ -71,7 +71,9 @@ export default function App() {
         <title>Spotify Sort</title>
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
-        <BrightText />
+        <div>
+          <BrightText mobile={true} />
+        </div>
         <div>
           {authData.bearerToken && (
             <MyCarousel
