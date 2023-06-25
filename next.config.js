@@ -13,17 +13,10 @@ module.exports = withBundleAnalyzer({
     config.module.rules.push({
       resolve: {
         alias: {
-          three$: path.resolve("./build/three-exports.js"),
+          three$: path.resolve("./build/three-exports.js")
         },
       },
-    }),
-    module.exports = {
-      ignoreWarnings: [
-        {
-          module: /three\.js\?[34]/
-        }
-      ]
-    }
+    })
     return config;
   }
 });

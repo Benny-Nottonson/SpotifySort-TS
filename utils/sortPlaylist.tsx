@@ -1,4 +1,4 @@
-import SpotifyWebApi from "spotify-web-api-node";
+import SpotifyWebApi from "./webApi/spotify-web-api";
 import getCCV, { ccvDistance } from "./imageProcessing";
 import { Track, TrackWithCCV, CCVCollection } from "@/types";
 
@@ -29,13 +29,15 @@ export default async function sortPlaylist(
   );
   const sortedLoop = ccvSort(trackIdWithCcv);
   const batchedTracks = splitToBatches(tracks, 100);
+  const options = {};
   await Promise.all(
     batchedTracks.map(async (batch) => {
       await spotifyApi.removeTracksFromPlaylist(
         playlistId,
-        batch.map((track: SpotifyApi.PlaylistTrackObject) => {
+        batch.map((track: any) => {
           return { uri: track.track!.uri };
-        })
+        }),
+        options
       );
     })
   );
@@ -44,7 +46,7 @@ export default async function sortPlaylist(
     batchedSortedTracks.map(async (batch) => {
       await spotifyApi.addTracksToPlaylist(
         playlistId,
-        batch.map((trackId: SpotifyApi.PlaylistTrackObject) => {
+        batch.map((trackId: any) => {
           return `spotify:track:${trackId}`;
         })
       );
@@ -63,7 +65,7 @@ function splitToBatches(array: any[], batchSize: number): any[] {
 async function getFullPlaylist(playlistId: string, spotifyApi: SpotifyWebApi) {
   const limit = 100;
   let offset = 0;
-  let allTracks: SpotifyApi.PlaylistTrackObject[] = [];
+  let allTracks: any[] = [];
 
   while (true) {
     const data = await spotifyApi.getPlaylistTracks(playlistId, {
