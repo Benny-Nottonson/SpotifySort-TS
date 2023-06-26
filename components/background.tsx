@@ -1,6 +1,13 @@
 import React from "react";
-import { Canvas } from "@react-three/fiber";
-import Scene from "./scene";
+import dynamic from "next/dynamic";
+
+const Canvas = dynamic(() => import("@react-three/fiber").then((mod) => mod.Canvas), {
+  ssr: false,
+});
+const Scene = dynamic(() => import("./scene"), {
+  ssr: false,
+});
+
 
 const BubbleBackground = () => {
   const glProps = {
@@ -17,6 +24,7 @@ const BubbleBackground = () => {
 
   return (
     <div className="-z-1 absolute w-screen h-screen object-cover">
+      <React.Suspense fallback={null} />
       <Canvas
         gl={glProps}
         shadows
@@ -30,6 +38,7 @@ const BubbleBackground = () => {
       >
         <Scene />
       </Canvas>
+      <React.Suspense />
     </div>
   );
 };

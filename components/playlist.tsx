@@ -80,19 +80,20 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
       <div className="flex items-center justify-center w-auto">
         <div className="p-4 pb-3 block w-[55vh] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide">
           <div className="flex">
-            {playlistImage && (
               <>
                 <div className="flex-col">
                   <div className="relative h-48 w-48 mr-4 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
-                    <Image
-                      src={playlistImage}
-                      alt="Playlist"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      fill
-                      priority
-                      style={{ objectFit: "fill" }}
-                      className="rounded-md opacity-90"
-                    />
+                    <React.Suspense fallback={<div />}>
+                      <Image
+                        src={playlistImage}
+                        alt="Playlist"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        fill
+                        priority
+                        style={{ objectFit: "fill" }}
+                        className="rounded-md opacity-90"
+                      />
+                    </React.Suspense>
                   </div>
                   <div className="grid float-left">
                     <p className="text-gray-400 text-base mt-2 text-left">
@@ -104,10 +105,10 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                   </div>
                 </div>
               </>
-            )}
             <div className="flex flex-col justify-between">
               <div>
                 <ul className="text-black/80 space-y-1 text-left">
+                  <React.Suspense>
                   {firstThreeSongs.map((song: any) => (
                     <React.Fragment key={song.id}>
                       <li className="truncate text-gray-200 text-base">
@@ -123,6 +124,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                       </li>
                     </React.Fragment>
                   ))}
+                  </React.Suspense>
                 </ul>
               </div>
               <div className="flex justify-end items-end mt-4">
@@ -160,9 +162,9 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     return (
       <div className="flex items-center justify-center w-auto">
         <div className="p-4 block h-[80vw] w-[50vw] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl tracking-wide">
-          {playlistImage && (
             <div className="flex flex-col items-center">
               <div className="relative h-36 w-36 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
+                <React.Suspense fallback={<div />}>
                 <Image
                   src={playlistImage}
                   alt="Playlist"
@@ -172,6 +174,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                   style={{ objectFit: "fill" }}
                   className="rounded-md opacity-90"
                 />
+                </React.Suspense>
               </div>
               <div className="mt-1 -space-y-1">
                 <p className="text-gray-400 text-sm">{songCount} songs</p>
@@ -195,7 +198,6 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                 </button>
               </div>
             </div>
-          )}
           <Image
             src="/cardMobile.png"
             fill
