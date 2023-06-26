@@ -67,6 +67,14 @@ const layerMaterial = new ShaderMaterial({
     }
    `,
   });
+
+  const sphereGeo50 = new SphereGeometry(50);
+  const sphereGeo60 = new SphereGeometry(60);
+  const sphereGeo80 = new SphereGeometry(80);
+  const sphereGeo110 = new SphereGeometry(110);
+  const sphereGeo140 = new SphereGeometry(140);
+  const sphereGeo150 = new SphereGeometry(150);
+  const sphereGeo160 = new SphereGeometry(160);
   
 
 function AnimatedCircle({
@@ -132,26 +140,9 @@ export default function Scene({ ...props }) {
     <>
       <color attach="background" args={["#000414"]} />
       <group {...props} dispose={null}>
-        <directionalLight
-          name="Directional Light"
-          castShadow
-          intensity={1}
-          shadow-mapSize-width={4096}
-          shadow-mapSize-height={4096}
-          shadow-camera-near={-10000}
-          shadow-camera-far={100000}
-          shadow-camera-left={-1000}
-          shadow-camera-right={1000}
-          shadow-camera-top={1000}
-          shadow-camera-bottom={-1000}
-          color="#44b078"
-          position={[900, 915, 950]}
-          rotation={[0.05, -0.5, 0.65]}
-          scale={[1, 1, 1.35]}
-        />
         <AnimatedCircle
           name="Small Top Right"
-          geometry={new SphereGeometry(60)}
+          geometry={sphereGeo60}
           castShadow
           receiveShadow
           position={[320, 190, -235]}
@@ -163,7 +154,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Center Right"
-          geometry={new SphereGeometry(150)}
+          geometry={sphereGeo150}
           castShadow
           receiveShadow
           position={[485, -95, 85]}
@@ -175,7 +166,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={new SphereGeometry(50)}
+          geometry={sphereGeo50}
           castShadow
           receiveShadow
           position={[-180, -170, 185]}
@@ -187,7 +178,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Right"
-          geometry={new SphereGeometry(140)}
+          geometry={sphereGeo140}
           castShadow
           receiveShadow
           position={[315, 350, 215]}
@@ -199,7 +190,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Top Left"
-          geometry={new SphereGeometry(160)}
+          geometry={sphereGeo160}
           castShadow
           receiveShadow
           position={[-400, 180, -225]}
@@ -211,7 +202,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Left"
-          geometry={new SphereGeometry(110)}
+          geometry={sphereGeo110}
           castShadow
           receiveShadow
           position={[-400, -195, 0]}
@@ -223,7 +214,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Big Bottom Center"
-          geometry={new SphereGeometry(140)}
+          geometry={sphereGeo140}
           castShadow
           receiveShadow
           position={[140, -325, 140]}
@@ -235,7 +226,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Center"
-          geometry={new SphereGeometry(80)}
+          geometry={sphereGeo80}
           castShadow
           receiveShadow
           position={[200, -200, -150]}
@@ -247,7 +238,7 @@ export default function Scene({ ...props }) {
         />
         <AnimatedCircle
           name="Small Bottom Left"
-          geometry={new SphereGeometry(80)}
+          geometry={sphereGeo80}
           castShadow
           receiveShadow
           position={[-525, -225, 180]}
@@ -260,11 +251,11 @@ export default function Scene({ ...props }) {
         <OrthographicCamera
           name="1"
           makeDefault={true}
-          zoom={0.81}
+          zoom={0.8}
           far={100000}
           near={-100000}
           position={[50, 80, 1000]}
-          rotation={[-0.04, 0.04, 0]}
+          rotation={[0, 0, 0]}
           scale={1}
         />
       </group>
