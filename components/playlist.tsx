@@ -4,6 +4,7 @@ import sortPlaylist from "@/utils/sortPlaylist";
 import { PlaylistProp } from "@/types";
 
 const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
+  const isMobile = window.innerWidth < 768;
   const [playlist, setPlaylist] = useState<any>(null);
   const [isSorting, setIsSorting] = useState(false);
   const maxCharacters = 25;
@@ -57,9 +58,12 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
 
   const { images, tracks } = playlist;
   const playlistImage = images && images.length > 0 ? images[0].url : null;
-  const firstThreeSongs = tracks?.items
-    .slice(0, 3)
-    .map((item: { track: any }) => item.track);
+  let firstThreeSongs;
+  if (!isMobile) {
+    firstThreeSongs = tracks?.items
+      .slice(0, 3)
+      .map((item: { track: any }) => item.track);
+  }
 
   const songCount: number = tracks?.items.length;
   const playlistTitle: string = playlist.name;
@@ -70,8 +74,6 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     }
     return `${text.slice(0, maxLength - 3)}...`;
   };
-
-  const isMobile = window.innerWidth < 768;
 
   if (!isMobile) {
     return (

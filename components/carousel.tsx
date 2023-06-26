@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Carousel,
   CarouselControllerHandle,
@@ -36,6 +36,12 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
     }
   };
 
+  useEffect(() => {
+    if (controllerRef.current) {
+      controllerRef.current.shiftRight();
+    }
+  }, []);
+
   const slides = [...playlistIDs];
 
   return (
@@ -54,7 +60,13 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
         >
           {slides.map((playlistId, index) => (
             <div key={index}>
-              <Playlist playlistId={playlistId} token={token} />
+              {(index === 0 || index === 1 || index === slides.length - 1) ? (
+                <Playlist playlistId={playlistId} token={token} />
+              ) : (
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <Playlist playlistId={playlistId} token={token} />
+                </React.Suspense>
+              )}
             </div>
           ))}
         </Carousel>
