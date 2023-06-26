@@ -69,6 +69,7 @@ export default function App() {
     <>
       <Head>
         <title>Spotify Sort</title>
+        <meta name="description" content="Spotify Sort" />
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen py-2 overflow-x-hidden">
         <div>

@@ -9,6 +9,10 @@ module.exports = withBundleAnalyzer({
   images: {
     domains: ["i.scdn.co", "mosaic.scdn.co"],
   },
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
   webpack: (config) => {
     config.module.rules.push({
       resolve: {
