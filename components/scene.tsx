@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import {
-  SphereGeometry,
-  ShaderMaterial,
-} from "three";
-import { OrthographicCamera } from "@react-three/drei";
+import { SphereGeometry, ShaderMaterial } from "three";
 
 type AnimatedCircleProps = {
   delay: number;
@@ -24,12 +20,12 @@ const getRandomMultiplier = () => {
 };
 
 const layerMaterial = new ShaderMaterial({
-    uniforms: {
-      alpha: { value: 0.8 },
-      bias: { value: 0.1 },
-      intensity: { value: 2 },
-    },
-    vertexShader: `
+  uniforms: {
+    alpha: { value: 0.8 },
+    bias: { value: 0.1 },
+    intensity: { value: 2 },
+  },
+  vertexShader: `
       varying vec2 vUv;
 
       void main() {
@@ -37,7 +33,7 @@ const layerMaterial = new ShaderMaterial({
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }    
     `,
-    fragmentShader: `
+  fragmentShader: `
     varying vec2 vUv;
 
     void main() {
@@ -66,16 +62,15 @@ const layerMaterial = new ShaderMaterial({
       gl_FragColor = vec4(color, 1.0);
     }
    `,
-  });
+});
 
-  const sphereGeo50 = new SphereGeometry(50);
-  const sphereGeo60 = new SphereGeometry(60);
-  const sphereGeo80 = new SphereGeometry(80);
-  const sphereGeo110 = new SphereGeometry(110);
-  const sphereGeo140 = new SphereGeometry(140);
-  const sphereGeo150 = new SphereGeometry(150);
-  const sphereGeo160 = new SphereGeometry(160);
-  
+const sphereGeo50 = new SphereGeometry(50);
+const sphereGeo60 = new SphereGeometry(60);
+const sphereGeo80 = new SphereGeometry(80);
+const sphereGeo110 = new SphereGeometry(110);
+const sphereGeo140 = new SphereGeometry(140);
+const sphereGeo150 = new SphereGeometry(150);
+const sphereGeo160 = new SphereGeometry(160);
 
 function AnimatedCircle({
   delay,
@@ -247,16 +242,6 @@ export default function Scene({ ...props }) {
           velocity={40}
           distance={80}
           delay={0.5}
-        />
-        <OrthographicCamera
-          name="1"
-          makeDefault={true}
-          zoom={0.8}
-          far={100000}
-          near={-100000}
-          position={[50, 80, 1000]}
-          rotation={[0, 0, 0]}
-          scale={1}
         />
       </group>
     </>

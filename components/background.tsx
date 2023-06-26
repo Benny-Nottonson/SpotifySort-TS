@@ -1,6 +1,6 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import Scene from './scene';
+import React from "react";
+import { Canvas } from "@react-three/fiber";
+import Scene from "./scene";
 
 const BubbleBackground = () => {
   const glProps = {
@@ -9,7 +9,7 @@ const BubbleBackground = () => {
     premultipliedAlpha: false,
     stencil: false,
     depth: false,
-    logarithmicDepthBuffer: true, 
+    logarithmicDepthBuffer: true,
     powerPreference: "high-performance",
     autoClear: false,
     sortObjects: false,
@@ -17,7 +17,17 @@ const BubbleBackground = () => {
 
   return (
     <div className="-z-1 absolute w-screen h-screen object-cover">
-      <Canvas gl={glProps} shadows camera={{ position: [0, 5, 10], fov: 25 }}>
+      <Canvas
+        gl={glProps}
+        shadows
+        orthographic
+        camera={{
+          zoom: 0.8,
+          far: 100000,
+          near: -1000000,
+          position: [50, 80, 1000],
+        }}
+      >
         <Scene />
       </Canvas>
     </div>
