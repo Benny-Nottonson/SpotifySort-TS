@@ -1,13 +1,6 @@
 import React from "react";
-import dynamic from "next/dynamic";
-
-const Canvas = dynamic(() => import("@react-three/fiber").then((mod) => mod.Canvas), {
-  ssr: false,
-});
-const Scene = dynamic(() => import("./scene"), {
-  ssr: false,
-});
-
+import { Canvas } from "@react-three/fiber";
+import Scene from "./scene";
 
 const BubbleBackground = () => {
   const glProps = {
