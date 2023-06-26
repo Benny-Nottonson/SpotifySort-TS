@@ -96,6 +96,7 @@ export { Group } from "three/src/objects/Group";
  * Renderers
  */
 export { WebGLRenderTarget } from "three/src/renderers/WebGLRenderTarget";
+export { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
 export { UniformsUtils } from "three/src/renderers/shaders/UniformsUtils";
 export { UniformsLib } from "three/src/renderers/shaders/UniformsLib";
 /**
@@ -109,9 +110,3 @@ export { DataTexture } from "three/src/textures/DataTexture";
 export { CompressedTexture } from "three/src/textures/CompressedTexture";
 export { CanvasTexture } from "three/src/textures/CanvasTexture";
 export { Texture } from "three/src/textures/Texture";
-
-/**
- * Custom
- */
-
-export { WebGLRenderer } from "./WebGLRendererCustom";
