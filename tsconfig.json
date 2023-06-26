@@ -23,6 +23,6 @@
     "**/*.ts",
     "**/*.tsx",
     "customSpline/react-spline.js"
-  ],
+, "build/WebGLRendererCustom.js"  ],
   "exclude": ["node_modules"]
 }
