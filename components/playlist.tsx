@@ -92,6 +92,8 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                         priority
                         style={{ objectFit: "fill" }}
                         className="rounded-md opacity-90"
+                        loading="eager"
+                        quality={75}
                       />
                     </React.Suspense>
                   </div>

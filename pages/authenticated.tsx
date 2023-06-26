@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy } from "react";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Button from "../components/button";
-import MyCarousel from "../components/carousel";
 import BrightText from "../components/brightText";
+
+const MyCarousel = lazy(() => import("../components/carousel"));
 
 export default function App() {
   const router = useRouter();
