@@ -23,6 +23,6 @@
     "**/*.ts",
     "**/*.tsx",
     "customSpline/react-spline.js"
-  ],
+, "utils/webApi/response-error.js"  ],
   "exclude": ["node_modules"]
 }
