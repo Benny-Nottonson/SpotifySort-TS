@@ -21,8 +21,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "customSpline/react-spline.js"
-, "build/WebGLRendererCustom.js"  ],
+    "**/*.tsx"],
   "exclude": ["node_modules"]
 }
