@@ -1,4 +1,4 @@
-import SpotifyWebApi from "./webApi/spotify-web-api";
+import SpotifyWebApi from "node-spotify-api-fetch";
 import getCCV, { ccvDistance } from "./imageProcessing";
 import { Track, TrackWithCCV, CCVCollection } from "@/types";
 

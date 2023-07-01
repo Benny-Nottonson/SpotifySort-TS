@@ -42,3 +42,5 @@ type NumberMatrix = number[][];
 type Track = { trackId: string; imageUrl: string };
 type TrackWithCCV = [string, number[][]];
 type CCVCollection = { label: string; ccv: number[][] };
+
+declare module 'node-spotify-api-fetch';
