@@ -29,9 +29,6 @@ dependencies:
   next-auth:
     specifier: ^4.22.1
     version: 4.22.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)
-  node-spotify-api-fetch:
-    specifier: ^1.0.1
-    version: 1.0.1
   postcss:
     specifier: 8.4.24
     version: 8.4.24
@@ -2125,10 +2122,6 @@ packages:
 
   /node-releases@2.0.12:
     resolution: {integrity: sha512-QzsYKWhXTWx8h1kIvqfnC++o0pEmpRQA/aenALsL2F4pqNVr7YzcdMlDij5WBnwftRbJCNJL/O7zdKaxKPHqgQ==}
-    dev: false
-
-  /node-spotify-api-fetch@1.0.1:
-    resolution: {integrity: sha512-MJ1DiaPcb9AriF7Gw6zMdkhqbS0XgVQ7BSFh67cD7SvnJ2IXKXPseKSuVozEE8UYkSYn2dZTjUAQJxOpiWVGJA==}
     dev: false
 
   /normalize-path@3.0.0:
