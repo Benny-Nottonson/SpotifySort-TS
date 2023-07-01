@@ -80,52 +80,52 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
       <div className="flex items-center justify-center w-auto">
         <div className="p-4 pb-3 block w-[55vh] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide">
           <div className="flex">
-              <>
-                <div className="flex-col">
-                  <div className="relative h-48 w-48 mr-4 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
-                    <React.Suspense fallback={<div />}>
-                      <Image
-                        src={playlistImage}
-                        alt="Playlist"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        fill
-                        priority
-                        style={{ objectFit: "fill" }}
-                        className="rounded-md opacity-90"
-                        loading="eager"
-                        quality={75}
-                      />
-                    </React.Suspense>
-                  </div>
-                  <div className="grid float-left">
-                    <p className="text-gray-400 text-base mt-2 text-left">
-                      {songCount} songs
-                    </p>
-                    <p className="text-gray-200 text-lg text-left">
-                      {playlistTitle}
-                    </p>
-                  </div>
+            <>
+              <div className="flex-col">
+                <div className="relative h-48 w-48 mr-4 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
+                  <React.Suspense fallback={<div />}>
+                    <Image
+                      src={playlistImage}
+                      alt="Playlist"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      fill
+                      priority
+                      style={{ objectFit: "fill" }}
+                      className="rounded-md opacity-90"
+                      loading="eager"
+                      quality={75}
+                    />
+                  </React.Suspense>
                 </div>
-              </>
+                <div className="grid float-left">
+                  <p className="text-gray-400 text-base mt-2 text-left">
+                    {songCount} songs
+                  </p>
+                  <p className="text-gray-200 text-lg text-left">
+                    {playlistTitle}
+                  </p>
+                </div>
+              </div>
+            </>
             <div className="flex flex-col justify-between">
               <div>
                 <ul className="text-black/80 space-y-1 text-left">
                   <React.Suspense>
-                  {firstThreeSongs.map((song: any) => (
-                    <React.Fragment key={song.id}>
-                      <li className="truncate text-gray-200 text-base">
-                        {truncateText(song.name, maxCharacters)} -
-                      </li>
-                      <li className="text-gray-400 text-lg">
-                        {truncateText(
-                          song.artists
-                            .map((artist: any) => artist.name)
-                            .join(", "),
-                          maxCharacters
-                        )}
-                      </li>
-                    </React.Fragment>
-                  ))}
+                    {firstThreeSongs.map((song: any) => (
+                      <React.Fragment key={song.id}>
+                        <li className="truncate text-gray-200 text-base">
+                          {truncateText(song.name, maxCharacters)} -
+                        </li>
+                        <li className="text-gray-400 text-lg">
+                          {truncateText(
+                            song.artists
+                              .map((artist: any) => artist.name)
+                              .join(", "),
+                            maxCharacters
+                          )}
+                        </li>
+                      </React.Fragment>
+                    ))}
                   </React.Suspense>
                 </ul>
               </div>
@@ -164,9 +164,9 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
     return (
       <div className="flex items-center justify-center w-auto">
         <div className="p-4 block h-[80vw] w-[50vw] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl tracking-wide">
-            <div className="flex flex-col items-center">
-              <div className="relative h-36 w-36 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
-                <React.Suspense fallback={<div />}>
+          <div className="flex flex-col items-center">
+            <div className="relative h-36 w-36 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
+              <React.Suspense fallback={<div />}>
                 <Image
                   src={playlistImage}
                   alt="Playlist"
@@ -176,30 +176,30 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                   style={{ objectFit: "fill" }}
                   className="rounded-md opacity-90"
                 />
-                </React.Suspense>
-              </div>
-              <div className="mt-1 -space-y-1">
-                <p className="text-gray-400 text-sm">{songCount} songs</p>
-                <p className="text-gray-200 text-md pb-4">{playlistTitle}</p>
-              </div>
-              <div className="align-bottom">
-                <button
-                  className={`duration-500 pt-4 ease-in-out hover:scale-110 rounded-lg brightness-110 ${
-                    isSorting ? "opacity-70 cursor-not-allowed" : ""
-                  }`}
-                  onClick={handleSortPlaylist}
-                  disabled={isSorting}
-                >
-                  <Image
-                    src="/sortButton.png"
-                    alt="sort button"
-                    width={130}
-                    height={40}
-                    priority
-                  />
-                </button>
-              </div>
+              </React.Suspense>
             </div>
+            <div className="mt-1 -space-y-1">
+              <p className="text-gray-400 text-sm">{songCount} songs</p>
+              <p className="text-gray-200 text-md pb-4">{playlistTitle}</p>
+            </div>
+            <div className="align-bottom">
+              <button
+                className={`duration-500 pt-4 ease-in-out hover:scale-110 rounded-lg brightness-110 ${
+                  isSorting ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+                onClick={handleSortPlaylist}
+                disabled={isSorting}
+              >
+                <Image
+                  src="/sortButton.png"
+                  alt="sort button"
+                  width={130}
+                  height={40}
+                  priority
+                />
+              </button>
+            </div>
+          </div>
           <Image
             src="/cardMobile.png"
             fill

@@ -14,7 +14,7 @@ module.exports = withBundleAnalyzer({
     locales: ["en"],
     defaultLocale: "en",
   },
-  webpack: (config) => {  
+  webpack: (config) => {
     config.module.rules.push({
       resolve: {
         alias: {

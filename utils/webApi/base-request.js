@@ -148,6 +148,6 @@ Builder.prototype.withBodyParameters =
 
 Builder.prototype.withHeaders = Builder.prototype._assigner("headers");
 
-module.exports.builder = function () {
+export function builder() {
   return new Builder();
-};
+}

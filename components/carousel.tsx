@@ -60,7 +60,7 @@ const MyCarousel = ({ playlistIDs, token }: CarouselProps) => {
         >
           {slides.map((playlistId, index) => (
             <div key={index}>
-              {(index === 0 || index === 1 || index === slides.length - 1) ? (
+              {index === 0 || index === 1 || index === slides.length - 1 ? (
                 <Playlist playlistId={playlistId} token={token} />
               ) : (
                 <React.Suspense fallback={<div>Loading...</div>}>
