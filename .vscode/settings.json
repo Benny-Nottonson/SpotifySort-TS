@@ -1,7 +1,0 @@
-{
-  "search.exclude": {
-    "**/node_modules": false
-  },
-  "json.schemaDownload.enable": true,
-  "search.useGlobalIgnoreFiles": true
-}
