@@ -17,7 +17,7 @@ const BubbleBackground = () => {
 
   return (
     <div className="-z-1 absolute w-screen h-screen object-cover">
-      <React.Suspense fallback={null} />
+      <React.Suspense fallback={null}>
       <Canvas
         gl={glProps}
         shadows
@@ -31,7 +31,7 @@ const BubbleBackground = () => {
       >
         <Scene />
       </Canvas>
-      <React.Suspense />
+      </React.Suspense>
     </div>
   );
 };
