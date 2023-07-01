@@ -104,7 +104,11 @@ function convertRGBAToRGB(rgb: RGB, alpha: number): RGB {
     return RGBAtoRGBCache[key];
   }
   const [r, g, b] = rgb;
-  const final: RGB = [Math.round(r * alpha), Math.round(g * alpha), Math.round(b * alpha)];
+  const final: RGB = [
+    Math.round(r * alpha),
+    Math.round(g * alpha),
+    Math.round(b * alpha),
+  ];
   RGBAtoRGBCache[key] = final;
   return final;
 }

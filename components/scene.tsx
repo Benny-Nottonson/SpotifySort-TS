@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 import { SphereGeometry, ShaderMaterial } from "three";
 
 type AnimatedCircleProps = {
@@ -13,10 +12,6 @@ type AnimatedCircleProps = {
   receiveShadow: boolean;
   name: string;
   rotation: [number, number, number];
-};
-
-const getRandomMultiplier = () => {
-  return 0.8 + Math.random() * 0.4;
 };
 
 const layerMaterial = new ShaderMaterial({
@@ -82,49 +77,65 @@ function AnimatedCircle({
 }: AnimatedCircleProps) {
   const meshRef = useRef<any | null>(null);
   const [isScaled, setIsScaled] = useState(false);
+  const [isMovingUp, setIsMovingUp] = useState(true);
   const startPosition = position[1];
-  const targetPosition = startPosition + distance;
 
   useEffect(() => {
-    const timeline = gsap.timeline({ repeat: -1, yoyo: true });
+    const startTime = Date.now();
 
-    if (!isScaled) {
-      const scaleTimeline = gsap.timeline();
-      scaleTimeline.from(meshRef.current!.scale, {
-        x: 0,
-        y: 0,
-        z: 0,
-        duration: 1 * getRandomMultiplier(),
-        ease: "power1.inOut",
-        delay: delay * getRandomMultiplier(),
-        onComplete: () => {
+    const scaleInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+
+      if (!isScaled) {
+        const scaleProgress = elapsed / (1000 * (0.5 + delay / 1.5));
+        const scaleValue = scaleProgress <= 1 ? scaleProgress : 1;
+        meshRef.current!.scale.set(scaleValue, scaleValue, scaleValue);
+
+        if (scaleProgress > 1) {
           setIsScaled(true);
-        },
-      });
-    }
-
-    timeline.to(meshRef.current!.position, {
-      y: targetPosition,
-      duration: distance / velocity,
-      ease: "power1.inOut",
-    });
-
-    timeline.to(meshRef.current!.position, {
-      y: startPosition,
-      duration: distance / velocity,
-      ease: "power1.inOut",
-    });
+        }
+      }
+    }, 16);
 
     return () => {
-      timeline.kill();
+      clearInterval(scaleInterval);
     };
-  }, [delay, distance, startPosition, targetPosition, velocity, isScaled]);
+  }, [isScaled, delay]);
+
+  useEffect(() => {
+    let startTime = Date.now();
+
+    const animationInterval = setInterval(() => {
+      if (isScaled) {
+        const currentTime = Date.now();
+        const elapsed = currentTime - startTime;
+
+        const animationProgress = elapsed / (1000 * (distance / velocity));
+        const easeProgress = 0.5 - 0.5 * Math.cos(animationProgress * Math.PI);
+
+        const currentPosition =
+          startPosition +
+          (isMovingUp ? easeProgress : 1 - easeProgress) * distance;
+        meshRef.current!.position.setY(currentPosition);
+
+        if (animationProgress > 1) {
+          setIsMovingUp((prevIsMovingUp) => !prevIsMovingUp);
+          startTime = Date.now();
+        }
+      }
+    }, 16);
+
+    return () => {
+      clearInterval(animationInterval);
+    };
+  }, [distance, startPosition, velocity, isScaled, isMovingUp]);
 
   return (
     <mesh
       ref={meshRef}
       position={position}
       material={layerMaterial}
+      scale={[0, 0, 0]}
       {...props}
     />
   );

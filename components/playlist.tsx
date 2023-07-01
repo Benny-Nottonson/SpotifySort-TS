@@ -148,9 +148,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                 </button>
               </div>
             </div>
-            <CardBackground
-                      className="absolute inset-0"
-                    />
+            <CardBackground className="absolute inset-0" />
           </div>
         </div>
       </div>
@@ -195,9 +193,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
               </button>
             </div>
           </div>
-          <CardBackground
-                      className="absolute inset-0"
-                    />
+          <CardBackground className="absolute inset-0" />
         </div>
       </div>
     );
