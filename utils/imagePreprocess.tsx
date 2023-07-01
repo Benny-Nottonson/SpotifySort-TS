@@ -1,5 +1,8 @@
 import { MacbethData, RGB, MacbethColor } from "@/types";
 
+const RGBAtoRGBCache: { [key: string]: RGB } = {};
+const MacCache: { [key: string]: MacbethData } = {};
+
 export default async function prepImage(
   url: string,
   size: number
@@ -64,6 +67,11 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
       const g = data[pixelIndex + 1];
       const b = data[pixelIndex + 2];
       const rgb: RGB = [r, g, b];
+      const key = `${rgb[0]}-${rgb[1]}-${rgb[2]}`;
+      if (MacCache[key]) {
+        row.push(MacCache[key][y][x]);
+        continue;
+      }
       const maxAlpha = 255;
       const alpha = data[pixelIndex + 3] / maxAlpha;
       const convertedRGB = convertRGBAToRGB(rgb, alpha);
@@ -83,6 +91,7 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
         }
       }
       row.push(bestMatch);
+      MacCache[key] = macbethData;
     }
     macbethData.push(row);
   }
@@ -90,6 +99,12 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
 }
 
 function convertRGBAToRGB(rgb: RGB, alpha: number): RGB {
+  const key = `${rgb[0]}-${rgb[1]}-${rgb[2]}-${alpha}`;
+  if (RGBAtoRGBCache[key]) {
+    return RGBAtoRGBCache[key];
+  }
   const [r, g, b] = rgb;
-  return [Math.round(r * alpha), Math.round(g * alpha), Math.round(b * alpha)];
+  const final: RGB = [Math.round(r * alpha), Math.round(g * alpha), Math.round(b * alpha)];
+  RGBAtoRGBCache[key] = final;
+  return final;
 }
