@@ -1,4 +1,3 @@
-import superagent, { get, post, del, put } from "superagent";
 import {
   TimeoutError,
   WebapiError,
@@ -7,11 +6,10 @@ import {
   WebapiPlayerError,
 } from "./response-error";
 
-var HttpManager = {};
+const HttpManager = {};
 
-/* Create superagent options from the base request */
-var _getParametersFromRequest = function (request) {
-  var options = {};
+const _getParametersFromRequest = (request) => {
+  const options = {};
 
   if (request.getQueryParameters()) {
     options.query = request.getQueryParameters();
@@ -29,10 +27,11 @@ var _getParametersFromRequest = function (request) {
   if (request.getHeaders()) {
     options.headers = request.getHeaders();
   }
+
   return options;
 };
 
-var _toError = function (response) {
+const _toError = (response) => {
   if (
     typeof response.body === "object" &&
     response.body.error &&
@@ -70,7 +69,6 @@ var _toError = function (response) {
     );
   }
 
-  /* Other type of error, or unhandled Web API error format */
   return new WebapiError(
     response.body,
     response.headers,
@@ -79,85 +77,61 @@ var _toError = function (response) {
   );
 };
 
-/* Make the request to the Web API */
-HttpManager._makeRequest = function (method, options, uri, callback) {
-  var req = method.bind(superagent)(uri);
+HttpManager._makeRequest = (method, options, uri, callback) => {
+  const headers = options.headers || {};
+  const body = options.data || null;
+  const queryParams = options.query || {};
 
-  if (options.query) {
-    req.query(options.query);
-  }
-
-  if (options.headers) {
-    req.set(options.headers);
-  }
-
-  if (options.data) {
-    req.send(options.data);
-  }
-
-  req.end(function (err, response) {
-    if (err) {
-      if (err.timeout) {
-        return callback(new TimeoutError());
-      } else if (err.response) {
-        return callback(_toError(err.response));
+  fetch(uri, {
+    method,
+    headers,
+    body,
+    query: queryParams,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const response = {
+        body: data,
+        headers: {},
+        statusCode: 200,
+      };
+      callback(null, response);
+    })
+    .catch((error) => {
+      if (error.timeout) {
+        callback(new TimeoutError());
+      } else if (error.response) {
+        callback(_toError(error.response));
       } else {
-        return callback(err);
+        callback(error);
       }
-    }
-
-    return callback(null, {
-      body: response.body,
-      headers: response.headers,
-      statusCode: response.statusCode,
     });
-  });
 };
 
-/**
- * Make a HTTP GET request.
- * @param {BaseRequest} The request.
- * @param {Function} The callback function.
- */
-HttpManager.get = function (request, callback) {
-  var options = _getParametersFromRequest(request);
-  var method = get;
+HttpManager.get = (request, callback) => {
+  const options = _getParametersFromRequest(request);
+  const method = "GET";
 
   HttpManager._makeRequest(method, options, request.getURI(), callback);
 };
 
-/**
- * Make a HTTP POST request.
- * @param {BaseRequest} The request.
- * @param {Function} The callback function.
- */
-HttpManager.post = function (request, callback) {
-  var options = _getParametersFromRequest(request);
-  var method = post;
+HttpManager.post = (request, callback) => {
+  const options = _getParametersFromRequest(request);
+  const method = "POST";
 
   HttpManager._makeRequest(method, options, request.getURI(), callback);
 };
 
-/**
- * Make a HTTP DELETE request.
- * @param {BaseRequest} The request.
- * @param {Function} The callback function.
- */
-HttpManager.del = function (request, callback) {
-  var options = _getParametersFromRequest(request);
-  var method = del;
+HttpManager.del = (request, callback) => {
+  const options = _getParametersFromRequest(request);
+  const method = "DELETE";
 
   HttpManager._makeRequest(method, options, request.getURI(), callback);
 };
 
-/**
- * Make a HTTP PUT request.
- * @param {BaseRequest} The request.
- * @param {Function} The callback function.
- */
-HttpManager.put = function (request, callback) {
-  var options = _getParametersFromRequest(request);
-  var method = put;
+HttpManager.put = (request, callback) => {
+  const options = _getParametersFromRequest(request);
+  const method = "PUT";
 
   HttpManager._makeRequest(method, options, request.getURI(), callback);
 };
