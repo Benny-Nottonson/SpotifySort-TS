@@ -1,7 +1,7 @@
 import { MacbethData, RGB, MacbethColor } from "@/types";
 
 const RGBAtoRGBCache: { [key: string]: RGB } = {};
-const MacCache: { [key: string]: MacbethData } = {};
+const MacCache: { [key: string]: number } = {};
 
 export default async function prepImage(
   url: string,
@@ -69,7 +69,7 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
       const rgb: RGB = [r, g, b];
       const key = `${rgb[0]}-${rgb[1]}-${rgb[2]}`;
       if (MacCache[key]) {
-        row.push(MacCache[key][y][x]);
+        row.push(MacCache[key]);
         continue;
       }
       const maxAlpha = 255;
@@ -91,7 +91,7 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
         }
       }
       row.push(bestMatch);
-      MacCache[key] = macbethData;
+      MacCache[key] = bestMatch;
     }
     macbethData.push(row);
   }
