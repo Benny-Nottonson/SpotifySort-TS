@@ -79,7 +79,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
   if (!isMobile) {
     return (
       <div className="flex items-center justify-center w-auto">
-        <div className="p-4 pb-3 block w-[55vh] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide border border-green-400/20">
+        <div className="p-4 pb-3 block w-[55vh] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide border border-green-400/10">
           <div className="flex">
             <>
               <div className="flex-col">
@@ -156,7 +156,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
   } else {
     return (
       <div className="flex items-center justify-center w-auto">
-        <div className="p-4 block h-[80vw] w-[50vw] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide border border-green-400/20">
+        <div className="p-4 block h-[80vw] w-[50vw] rounded-3xl perspective-800 rotate-y-2 ease-in backdrop-blur-2xl bg-white/5 tracking-wide border border-green-400/10">
           <div className="flex flex-col items-center">
             <div className="relative h-36 w-36 rounded-full perspective-800 rotate-y-8 transition-transform duration-300">
               <React.Suspense fallback={<div />}>
