@@ -62,7 +62,7 @@ function splitToBatches(array: any[], batchSize: number): any[] {
   return batches;
 }
 
-async function getFullPlaylist(playlistId: string, spotifyApi: any) {
+async function getFullPlaylist(playlistId: string, spotifyApi: SpotifyWebApi) {
   const limit = 100;
   let offset = 0;
   let allTracks: any[] = [];
