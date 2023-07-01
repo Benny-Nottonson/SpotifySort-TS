@@ -9,6 +9,7 @@ module.exports = withBundleAnalyzer({
   images: {
     domains: ["i.scdn.co", "mosaic.scdn.co"],
   },
+  productionBrowserSourceMaps: true,
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
