@@ -14,19 +14,6 @@ module.exports = withBundleAnalyzer({
     locales: ["en"],
     defaultLocale: "en",
   },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value: 'vitals.vercel-insights.com',
-          },
-        ],
-      },
-    ];
-  },
   webpack: (config) => {  
     config.module.rules.push({
       resolve: {
