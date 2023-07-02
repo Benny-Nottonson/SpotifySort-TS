@@ -3,6 +3,7 @@ import Image from "next/image";
 import sortPlaylist from "@/utils/sortPlaylist";
 import { PlaylistProp } from "@/types";
 import CardBackground from "@/components/cardBackground";
+import SortButton from "./sortButton";
 
 const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
   const isMobile = window.innerWidth < 768;
@@ -138,13 +139,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                   onClick={handleSortPlaylist}
                   disabled={isSorting}
                 >
-                  <Image
-                    src="/sortButton.png"
-                    alt="sort button"
-                    width={130}
-                    height={40}
-                    priority
-                  />
+                  <SortButton />
                 </button>
               </div>
             </div>
@@ -177,19 +172,13 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
             </div>
             <div className="align-bottom">
               <button
-                className={`duration-500 pt-4 ease-in-out hover:scale-110 rounded-lg brightness-110 ${
+                className={`duration-500 mt-4 ease-in-out hover:scale-110 rounded-lg brightness-110 ${
                   isSorting ? "opacity-70 cursor-not-allowed" : ""
                 }`}
                 onClick={handleSortPlaylist}
                 disabled={isSorting}
               >
-                <Image
-                  src="/sortButton.png"
-                  alt="sort button"
-                  width={130}
-                  height={40}
-                  priority
-                />
+                <SortButton />
               </button>
             </div>
           </div>
