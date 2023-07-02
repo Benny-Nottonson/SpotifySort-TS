@@ -95,8 +95,7 @@ export { Group } from "three/src/objects/Group";
 /**
  * Renderers
  */
-export { WebGLRenderTarget } from "three/src/renderers/WebGLRenderTarget";
-export { WebGLRenderer } from "three/src/renderers/WebGLRenderer";
+export { WebGLRenderer } from "./webGLRenderer";
 export { UniformsUtils } from "three/src/renderers/shaders/UniformsUtils";
 export { UniformsLib } from "three/src/renderers/shaders/UniformsLib";
 /**
