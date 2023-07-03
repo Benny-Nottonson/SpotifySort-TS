@@ -1,7 +1,7 @@
 # SpotifySort
 
 [![Website](https://img.shields.io/website?label=Check%20it%20out&style=flat-square&url=https%3A%2F%2Fspotifysort.vercel.app)](https://spotifysort.vercel.app)
-[![GitHub license](https://img.shields.io/github/license/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/blob/master/LICENSE.md)
 [![GitHub stars](https://img.shields.io/github/stars/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/issues)
 
