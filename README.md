@@ -14,8 +14,6 @@
 - [Technologies](#technologies)
 - [Setup](#setup)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
