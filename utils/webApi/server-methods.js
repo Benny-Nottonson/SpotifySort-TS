@@ -29,7 +29,7 @@ export function clientCredentialsGrant(callback) {
     .withHeaders({
       Authorization:
         "Basic " +
-        new Buffer(this.getClientId() + ":" + this.getClientSecret()).toString(
+        new Buffer.from(this.getClientId() + ":" + this.getClientSecret()).toString(
           "base64"
         ),
       "Content-Type": "application/x-www-form-urlencoded",
@@ -61,7 +61,7 @@ export function refreshAccessToken(callback) {
     .withHeaders({
       Authorization:
         "Basic " +
-        new Buffer(this.getClientId() + ":" + this.getClientSecret()).toString(
+        new Buffer.from(this.getClientId() + ":" + this.getClientSecret()).toString(
           "base64"
         ),
       "Content-Type": "application/x-www-form-urlencoded",
