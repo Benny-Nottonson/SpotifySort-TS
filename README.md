@@ -7,8 +7,6 @@
 
 > A playlist sorter for Spotify based on color coherence vectors and linear algebra.
 
-![Spotifysort Preview](./preview.png)
-
 ## Table of Contents
 
 - [Introduction](#introduction)
