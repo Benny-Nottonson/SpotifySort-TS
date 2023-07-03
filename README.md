@@ -1,38 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SpotifySort
 
-## Getting Started
+[![Website](https://img.shields.io/website?label=Check%20it%20out&style=flat-square&url=https%3A%2F%2Fspotifysort.vercel.app)](https://spotifysort.vercel.app)
+[![GitHub license](https://img.shields.io/github/license/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/benny-nottonson/spotifysort?style=flat-square)](https://github.com/benny-nottonson/spotifysort/issues)
 
-First, run the development server:
+> A playlist sorter for Spotify based on color coherence vectors and linear algebra.
+
+![Spotifysort Preview](./preview.png)
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+SpotifySort is a web application that allows users to log in with their Spotify accounts, select any of their playlists, and sort them based on color. The color sorting algorithm utilizes color coherence vectors (CCVs) and linear algebra to determine the distance between different images, specifically using cosine distance and vectors.
+
+The main goal of this project is to provide a unique and visually appealing way to organize and explore Spotify playlists. By sorting playlists based on color, users can easily group songs with similar visual characteristics together, adding a new dimension to the way they interact with their music collections.
+
+## Features
+
+- Log in with Spotify account
+- Fetch and display user's playlists
+- Sort playlists based on color coherence vectors
+- Display sorted playlists with image previews
+- Responsive design for various screen sizes
+
+## Technologies
+
+The project was built using the following technologies:
+
+- **NextJS**: A React framework for building server-side rendered (SSR) and static websites.
+- **Spotify Web API**: Used to authenticate users and retrieve playlist data.
+- **CCV (Color Coherence Vector)**: A computer vision library that provides the color sorting algorithm.
+- **Linear Algebra Libraries**: Utilized for vector calculations and distance measurements.
+- **CSS Modules**: Used for modular and scoped CSS styling.
+
+## Setup
+
+To set up the project locally, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/benny-nottonson/spotifysort.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd spotifysort
+```
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+4. Rename the `.env.example` file to `.env.local` and provide your Spotify API credentials. You can obtain these credentials by creating a new Spotify App in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open your browser and visit `http://localhost:3000` to see the website running locally.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+1. Open the deployed website: [https://spotifysort.vercel.app](https://spotifysort.vercel.app)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+2. Click on the "Log in with Spotify" button to authenticate with your
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+ Spotify account.
 
-## Learn More
+3. Once logged in, you will see a list of your playlists. Click on any playlist to sort it based on color.
 
-To learn more about Next.js, take a look at the following resources:
+4. The sorted playlist will be displayed, showcasing the album art images with a visual color coherence.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Explore and enjoy your organized playlists!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Disclaimer:** This project is not affiliated with or endorsed by Spotify. It is an independent project created for educational and personal use only.
