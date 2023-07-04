@@ -18,7 +18,6 @@
     "react": "18.2.0",
     "react-configurable-carousel": "^1.3.2",
     "react-dom": "18.2.0",
-    "sharp": "^0.32.1",
     "webpack": "^5.88.1"
   },
   "devDependencies": {
