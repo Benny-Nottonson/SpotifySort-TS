@@ -52,6 +52,8 @@ module.exports = withBundleAnalyzer({
       ];
       config.plugins.push(new CompressionPlugin());
       config.plugins.push(new webpack.optimize.AggressiveMergingPlugin());
+      config.optimization.usedExports = true;
+      config.optimization.minimize = true;
     }
     config.resolve.alias["three$"] = path.resolve("./build/three-exports.js");
     return config;
