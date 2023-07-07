@@ -237,7 +237,7 @@ class WebGLRenderer {
         if (_gl === null) {
           if (getContext(contextNames)) {
             throw new Error(
-              "Error creating WebGL context with your selected attributes."
+              "Error creating WebGL context with your selected attributes.",
             );
           } else {
             throw new Error("Error creating WebGL context.");
@@ -283,7 +283,7 @@ class WebGLRenderer {
         properties,
         capabilities,
         utils,
-        info
+        info,
       );
       cubemaps = new WebGLCubeMaps(_this);
       cubeuvmaps = new WebGLCubeUVMaps(_this);
@@ -292,7 +292,7 @@ class WebGLRenderer {
         _gl,
         extensions,
         attributes,
-        capabilities
+        capabilities,
       );
       geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
       objects = new WebGLObjects(_gl, geometries, attributes, info);
@@ -305,7 +305,7 @@ class WebGLRenderer {
         extensions,
         capabilities,
         bindingStates,
-        clipping
+        clipping,
       );
       materials = new WebGLMaterials(_this, properties);
       renderLists = new WebGLRenderLists();
@@ -317,7 +317,7 @@ class WebGLRenderer {
         state,
         objects,
         _alpha,
-        premultipliedAlpha
+        premultipliedAlpha,
       );
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
       uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
@@ -326,13 +326,13 @@ class WebGLRenderer {
         _gl,
         extensions,
         info,
-        capabilities
+        capabilities,
       );
       indexedBufferRenderer = new WebGLIndexedBufferRenderer(
         _gl,
         extensions,
         info,
-        capabilities
+        capabilities,
       );
 
       info.programs = programCache.programs;
@@ -371,7 +371,7 @@ class WebGLRenderer {
     this.setSize = function (width, height, updateStyle = true) {
       if (xr.isPresenting) {
         console.warn(
-          "THREE.WebGLRenderer: Can't change size while VR device is presenting."
+          "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
         );
         return;
       }
@@ -398,7 +398,7 @@ class WebGLRenderer {
       }
 
       state.viewport(
-        _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor()
+        _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor(),
       );
     };
 
@@ -466,7 +466,7 @@ class WebGLRenderer {
       geometry,
       material,
       object,
-      group
+      group,
     ) {
       if (scene === null) scene = _emptyScene; // renderBufferDirect second parameter used to be fog (could be null)
 
@@ -530,7 +530,7 @@ class WebGLRenderer {
       if (object.isMesh) {
         if (material.wireframe === true) {
           state.setLineWidth(
-            material.wireframeLinewidth * getTargetPixelRatio()
+            material.wireframeLinewidth * getTargetPixelRatio(),
           );
           renderer.setMode(_gl.LINES);
         } else {
@@ -565,7 +565,7 @@ class WebGLRenderer {
             : Infinity;
         const instanceCount = Math.min(
           geometry.instanceCount,
-          maxInstanceCount
+          maxInstanceCount,
         );
 
         renderer.renderInstances(drawStart, drawCount, instanceCount);
@@ -579,7 +579,7 @@ class WebGLRenderer {
     this.render = function (scene, camera) {
       if (camera !== undefined && camera.isCamera !== true) {
         console.error(
-          "THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera."
+          "THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.",
         );
         return;
       }
@@ -612,14 +612,14 @@ class WebGLRenderer {
 
       _projScreenMatrix.multiplyMatrices(
         camera.projectionMatrix,
-        camera.matrixWorldInverse
+        camera.matrixWorldInverse,
       );
       _frustum.setFromProjectionMatrix(_projScreenMatrix);
 
       _localClippingEnabled = this.localClippingEnabled;
       _clippingEnabled = clipping.init(
         this.clippingPlanes,
-        _localClippingEnabled
+        _localClippingEnabled,
       );
 
       currentRenderList = renderLists.get(scene, renderListStack.length);
@@ -744,7 +744,7 @@ class WebGLRenderer {
                 material,
                 groupOrder,
                 _vector3.z,
-                null
+                null,
               );
             }
           }
@@ -783,7 +783,7 @@ class WebGLRenderer {
                     groupMaterial,
                     groupOrder,
                     _vector3.z,
-                    group
+                    group,
                   );
                 }
               }
@@ -794,7 +794,7 @@ class WebGLRenderer {
                 material,
                 groupOrder,
                 _vector3.z,
-                null
+                null,
               );
             }
           }
@@ -823,7 +823,7 @@ class WebGLRenderer {
           opaqueObjects,
           transmissiveObjects,
           scene,
-          camera
+          camera,
         );
 
       if (viewport) state.viewport(_currentViewport.copy(viewport));
@@ -867,7 +867,7 @@ class WebGLRenderer {
 
       object.modelViewMatrix.multiplyMatrices(
         camera.matrixWorldInverse,
-        object.matrixWorld
+        object.matrixWorld,
       );
       object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
 
@@ -886,7 +886,7 @@ class WebGLRenderer {
           geometry,
           material,
           object,
-          group
+          group,
         );
 
         material.side = FrontSide;
@@ -897,7 +897,7 @@ class WebGLRenderer {
           geometry,
           material,
           object,
-          group
+          group,
         );
 
         material.side = DoubleSide;
@@ -908,7 +908,7 @@ class WebGLRenderer {
           geometry,
           material,
           object,
-          group
+          group,
         );
       }
 
@@ -930,7 +930,7 @@ class WebGLRenderer {
         lights.state,
         shadowsArray,
         scene,
-        object
+        object,
       );
       const programCacheKey = programCache.getProgramCacheKey(parameters);
 
@@ -1023,7 +1023,7 @@ class WebGLRenderer {
       const progUniforms = program.getUniforms();
       const uniformsList = WebGLUniforms.seqWithValue(
         progUniforms.seq,
-        uniforms
+        uniforms,
       );
 
       materialProperties.currentProgram = program;
@@ -1202,7 +1202,7 @@ class WebGLRenderer {
           p_uniforms.setValue(
             _gl,
             "logDepthBufFC",
-            2.0 / (Math.log(camera.far + 1.0) / Math.LN2)
+            2.0 / (Math.log(camera.far + 1.0) / Math.LN2),
           );
         }
 
@@ -1232,7 +1232,7 @@ class WebGLRenderer {
           if (uCamPos !== undefined) {
             uCamPos.setValue(
               _gl,
-              _vector3.setFromMatrixPosition(camera.matrixWorld)
+              _vector3.setFromMatrixPosition(camera.matrixWorld),
             );
           }
         }
@@ -1248,7 +1248,7 @@ class WebGLRenderer {
           p_uniforms.setValue(
             _gl,
             "isOrthographic",
-            camera.isOrthographicCamera === true
+            camera.isOrthographicCamera === true,
           );
         }
 
@@ -1284,16 +1284,16 @@ class WebGLRenderer {
               _gl,
               "boneTexture",
               skeleton.boneTexture,
-              textures
+              textures,
             );
             p_uniforms.setValue(
               _gl,
               "boneTextureSize",
-              skeleton.boneTextureSize
+              skeleton.boneTextureSize,
             );
           } else {
             console.warn(
-              "THREE.WebGLRenderer: SkinnedMesh can only be used with WebGL 2. With WebGL 1 OES_texture_float and vertex textures support is required."
+              "THREE.WebGLRenderer: SkinnedMesh can only be used with WebGL 2. With WebGL 1 OES_texture_float and vertex textures support is required.",
             );
           }
         }
@@ -1332,7 +1332,7 @@ class WebGLRenderer {
         p_uniforms.setValue(
           _gl,
           "toneMappingExposure",
-          _this.toneMappingExposure
+          _this.toneMappingExposure,
         );
 
         if (materialProperties.needsLights) {
@@ -1359,14 +1359,14 @@ class WebGLRenderer {
           material,
           _pixelRatio,
           _height,
-          _transmissionRenderTarget
+          _transmissionRenderTarget,
         );
 
         WebGLUniforms.upload(
           _gl,
           materialProperties.uniformsList,
           m_uniforms,
-          textures
+          textures,
         );
       }
 
@@ -1375,7 +1375,7 @@ class WebGLRenderer {
           _gl,
           materialProperties.uniformsList,
           m_uniforms,
-          textures
+          textures,
         );
         material.uniformsNeedUpdate = false;
       }
@@ -1403,7 +1403,7 @@ class WebGLRenderer {
             uniformsGroups.bind(group, program);
           } else {
             console.warn(
-              "THREE.WebGLRenderer: Uniform Buffer Objects can only be used with WebGL 2."
+              "THREE.WebGLRenderer: Uniform Buffer Objects can only be used with WebGL 2.",
             );
           }
         }

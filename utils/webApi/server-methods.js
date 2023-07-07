@@ -5,7 +5,7 @@ export function createAuthorizeURL(
   scopes,
   state,
   showDialog,
-  responseType = "code"
+  responseType = "code",
 ) {
   return builder()
     .withPath("/authorize")
@@ -29,9 +29,9 @@ export function clientCredentialsGrant(callback) {
     .withHeaders({
       Authorization:
         "Basic " +
-        new Buffer.from(this.getClientId() + ":" + this.getClientSecret()).toString(
-          "base64"
-        ),
+        new Buffer.from(
+          this.getClientId() + ":" + this.getClientSecret(),
+        ).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     })
     .build()
@@ -61,9 +61,9 @@ export function refreshAccessToken(callback) {
     .withHeaders({
       Authorization:
         "Basic " +
-        new Buffer.from(this.getClientId() + ":" + this.getClientSecret()).toString(
-          "base64"
-        ),
+        new Buffer.from(
+          this.getClientId() + ":" + this.getClientSecret(),
+        ).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     })
     .build()

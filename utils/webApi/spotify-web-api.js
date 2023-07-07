@@ -113,7 +113,7 @@ class SpotifyWebApi {
         {
           ids: trackIds.join(","),
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);
@@ -150,7 +150,7 @@ class SpotifyWebApi {
         {
           ids: albumIds.join(","),
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);
@@ -206,7 +206,7 @@ class SpotifyWebApi {
           type: types.join(","),
           q: query,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);
@@ -438,7 +438,7 @@ class SpotifyWebApi {
         {
           name: name,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.post, callback);
@@ -546,7 +546,7 @@ class SpotifyWebApi {
         {
           tracks: tracks,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.del, callback);
@@ -564,7 +564,7 @@ class SpotifyWebApi {
     playlistId,
     positions,
     snapshotId,
-    callback
+    callback,
   ) {
     return builder(this.getAccessToken())
       .withPath("/v1/playlists/" + playlistId + "/tracks")
@@ -609,7 +609,7 @@ class SpotifyWebApi {
     rangeStart,
     insertBefore,
     options,
-    callback
+    callback,
   ) {
     return builder(this.getAccessToken())
       .withPath("/v1/playlists/" + playlistId + "/tracks")
@@ -619,7 +619,7 @@ class SpotifyWebApi {
           range_start: rangeStart,
           insert_before: insertBefore,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.put, callback);
@@ -896,7 +896,7 @@ class SpotifyWebApi {
         {
           uri: uri,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.post, callback);
@@ -958,7 +958,7 @@ class SpotifyWebApi {
         {
           device_ids: deviceIds,
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.put, callback);
@@ -1005,7 +1005,9 @@ class SpotifyWebApi {
         .withPath("/v1/me/player/pause")
         /*jshint camelcase: false */
         .withQueryParameters(
-          options && options.device_id ? { device_id: options.device_id } : null
+          options && options.device_id
+            ? { device_id: options.device_id }
+            : null,
         )
         .withHeaders({ "Content-Type": "application/json" })
         .build()
@@ -1024,7 +1026,7 @@ class SpotifyWebApi {
     return builder(this.getAccessToken())
       .withPath("/v1/me/player/previous")
       .withQueryParameters(
-        options && options.device_id ? { device_id: options.device_id } : null
+        options && options.device_id ? { device_id: options.device_id } : null,
       )
       .build()
       .execute(HttpManager.post, callback);
@@ -1041,7 +1043,7 @@ class SpotifyWebApi {
     return builder(this.getAccessToken())
       .withPath("/v1/me/player/next")
       .withQueryParameters(
-        options && options.device_id ? { device_id: options.device_id } : null
+        options && options.device_id ? { device_id: options.device_id } : null,
       )
       .build()
       .execute(HttpManager.post, callback);
@@ -1245,7 +1247,7 @@ class SpotifyWebApi {
         {
           type: "artist",
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);
@@ -1266,7 +1268,7 @@ class SpotifyWebApi {
           encodeURIComponent(userId) +
           "/playlists/" +
           playlistId +
-          "/followers/contains"
+          "/followers/contains",
       )
       .withQueryParameters({
         ids: followerIds.join(","),
@@ -1398,7 +1400,7 @@ class SpotifyWebApi {
         {
           ids: showIds.join(","),
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);
@@ -1539,7 +1541,7 @@ class SpotifyWebApi {
         {
           ids: episodeIds.join(","),
         },
-        options
+        options,
       )
       .build()
       .execute(HttpManager.get, callback);

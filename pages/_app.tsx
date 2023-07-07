@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import "@/styles/globals.css";
 
 const DynamicBubbleBackground = dynamic(
-  () => import("../components/background")
+  () => import("../components/background"),
 );
 
 function MyApp({

@@ -24,7 +24,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         if (response.ok) {
           const data = await response.json();
@@ -33,7 +33,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
           console.error(
             "Error fetching playlist:",
             response.status,
-            response.statusText
+            response.statusText,
           );
         }
       } catch (error) {
@@ -123,7 +123,7 @@ const PlaylistComponent = ({ token, playlistId }: PlaylistProp) => {
                             song.artists
                               .map((artist: any) => artist.name)
                               .join(", "),
-                            maxCharacters
+                            maxCharacters,
                           )}
                         </li>
                       </React.Fragment>

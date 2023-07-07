@@ -6,7 +6,7 @@ const imageSize = 32;
 
 export default async function sortPlaylist(
   playlistId: string,
-  bearerToken: string
+  bearerToken: string,
 ) {
   const spotifyApi = new SpotifyWebApi();
   spotifyApi.setAccessToken(bearerToken);
@@ -25,7 +25,7 @@ export default async function sortPlaylist(
       const trackId = track.trackId;
       const ccv = await getCCV(track.imageUrl, imageSize);
       return [trackId, ccv] as [string, number[][]];
-    })
+    }),
   );
   const sortedLoop = ccvSort(trackIdWithCcv);
   const batchedTracks = splitToBatches(tracks, 100);
@@ -37,9 +37,9 @@ export default async function sortPlaylist(
         batch.map((track: any) => {
           return { uri: track.track!.uri };
         }),
-        options
+        options,
       );
-    })
+    }),
   );
   const batchedSortedTracks = splitToBatches(sortedLoop, 100);
   await Promise.all(
@@ -48,9 +48,9 @@ export default async function sortPlaylist(
         playlistId,
         batch.map((trackId: any) => {
           return `spotify:track:${trackId}`;
-        })
+        }),
       );
-    })
+    }),
   );
 }
 
@@ -108,7 +108,7 @@ function sortCCVsByDistance(ccvCollection: CCVCollection[]): string[] {
       } else {
         const distance = ccvDistance(
           ccvCollection[i].ccv,
-          ccvCollection[j].ccv
+          ccvCollection[j].ccv,
         );
         distances.push(distance);
       }
@@ -165,7 +165,7 @@ function opt2Swap(solution: number[], i: number, j: number): number[] {
 
 function getTotalDistance(
   solution: number[],
-  distanceMatrix: number[][]
+  distanceMatrix: number[][],
 ): number {
   let distance = 0;
   const numVertices = solution.length;

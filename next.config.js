@@ -20,7 +20,7 @@ module.exports = withBundleAnalyzer({
   webpack: (config, { isServer, dev }) => {
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
-        chunks: 'async',
+        chunks: "async",
         minSize: 20000,
         minRemainingSize: 0,
         minChunks: 1,

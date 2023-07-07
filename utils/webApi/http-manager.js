@@ -41,7 +41,7 @@ const _toError = (response) => {
     return new WebapiPlayerError(
       response.body,
       response.headers,
-      response.statusCode
+      response.statusCode,
     );
   }
 
@@ -53,7 +53,7 @@ const _toError = (response) => {
     return new WebapiRegularError(
       response.body,
       response.headers,
-      response.statusCode
+      response.statusCode,
     );
   }
 
@@ -65,7 +65,7 @@ const _toError = (response) => {
     return new WebapiAuthenticationError(
       response.body,
       response.headers,
-      response.statusCode
+      response.statusCode,
     );
   }
 
@@ -73,7 +73,7 @@ const _toError = (response) => {
     response.body,
     response.headers,
     response.statusCode,
-    response.body
+    response.body,
   );
 };
 

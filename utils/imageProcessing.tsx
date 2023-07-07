@@ -3,7 +3,7 @@ import { CCV, CoherencePair, MacbethData } from "@/types";
 
 export default async function getCCV(
   imageUrl: string,
-  imageSize: number
+  imageSize: number,
 ): Promise<CCV> {
   const preppedData: MacbethData = await prepImage(imageUrl, imageSize);
   const height = preppedData.length;
@@ -16,7 +16,7 @@ export default async function getCCV(
 
 function computeConnectedComponents(
   data: number[][],
-  threshold: number
+  threshold: number,
 ): CoherencePair {
   const height = data.length;
   const width = data[0].length;
@@ -46,7 +46,7 @@ function computeConnectedComponents(
           x,
           y,
           color,
-          threshold
+          threshold,
         );
         coherencePairs[componentLabel] = {
           alpha: coherentSize,
@@ -68,7 +68,7 @@ function exploreConnectedComponent(
   x: number,
   y: number,
   color: number,
-  threshold: number
+  threshold: number,
 ): { componentSize: number; coherentSize: number } {
   const height = data.length;
   const width = data[0].length;
@@ -104,7 +104,7 @@ function getNeighbors(
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
 ): [number, number][] {
   const neighbors: [number, number][] = [];
 
@@ -120,7 +120,7 @@ function getNeighbors(
 }
 
 function computeColorCoherenceVector(
-  coherencePairs: CoherencePair
+  coherencePairs: CoherencePair,
 ): number[][] {
   const numColors = 24;
   const colorCoherenceVector: number[][] = new Array(numColors);

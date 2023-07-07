@@ -36,7 +36,7 @@ export default function App() {
             headers: {
               Authorization: `Bearer ${authData.bearerToken}`,
             },
-          }
+          },
         );
         if (response.ok) {
           const data = await response.json();
@@ -49,7 +49,7 @@ export default function App() {
             "Error fetching playlists:",
             response.status,
             response.statusText,
-            signOut({ callbackUrl: "/" })
+            signOut({ callbackUrl: "/" }),
           );
         }
       } catch (error) {

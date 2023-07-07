@@ -5,7 +5,7 @@ const MacCache: { [key: string]: number } = {};
 
 export default async function prepImage(
   url: string,
-  size: number
+  size: number,
 ): Promise<MacbethData> {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -83,7 +83,7 @@ function imageToMacbeth(imageData: ImageData, size: number): MacbethData {
         const distance = Math.sqrt(
           (convertedRGB[0] - mr) ** 2 +
             (convertedRGB[1] - mg) ** 2 +
-            (convertedRGB[2] - mb) ** 2
+            (convertedRGB[2] - mb) ** 2,
         );
         if (distance < minDistance) {
           minDistance = distance;

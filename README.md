@@ -77,7 +77,7 @@ npm run dev
 
 2. Click on the "Log in with Spotify" button to authenticate with your
 
- Spotify account.
+Spotify account.
 
 3. Once logged in, you will see a list of your playlists. Click on any playlist to sort it based on color.
 
