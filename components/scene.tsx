@@ -144,7 +144,6 @@ function AnimatedCircle({
 export default function Scene({ ...props }) {
   return (
     <>
-      <color attach="background" args={[0, 4, 20]} />
       <group {...props} dispose={null}>
         <AnimatedCircle
           name="Small Top Right"
